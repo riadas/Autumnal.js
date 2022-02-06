@@ -187,7 +187,6 @@ $(document).ready(function () {
 
   game = vgdl_parser.playGame(vgdl_game.game, vgdl_game.level, 0);
 
-
 	var retry_container = $('<div id="retry-div" class="Flex-Container"></div>');
 	var retry_text = $('<p id="retry-text">If you get stuck, you can press "Retry" to reset this level. Also, remember that spacebar may be used.</p>')
 	var retry_button = $('<button id="retry">Retry</button>')
@@ -225,7 +224,15 @@ $(document).ready(function () {
 		$('#start').remove();
 		game.paused = false;
 
-	}
+  }
+  
+  save = function () {
+    console.log("SAVE!")
+    history_json = { "history" : game.history, "user_events": game.user_events, "game_name" : data.name };
+    console.log(history_json);
+  }
+
+  $(document).on('click', '#save', save);
 
 
 

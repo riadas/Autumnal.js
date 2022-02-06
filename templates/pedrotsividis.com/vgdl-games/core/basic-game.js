@@ -1183,11 +1183,7 @@ var BasicGame = function (gamejs, args) {
 				that.on_game_end();
 				return
 			};
-
-      console.log(that.keystate);
-      console.log(that.keystate);
-      console.log("that.getFullStateColorized()");
-      console.log(that.getFullStateColorized());
+      
 
 			// // console.log(that.kill_list);
 
@@ -1222,7 +1218,15 @@ var BasicGame = function (gamejs, args) {
 				that.realGameStates.push(that.getFullState());
 			}
 
-			that.time ++;
+      that.time ++;
+      
+      console.log("that.keystate");
+      console.log(that.keystate);
+      console.log("that.getFullStateColorized()");
+      console.log(that.getFullStateColorized());
+      
+      that.user_events.push(that.keystate);
+      that.history.push(that.getFullStateColorized());
 
 			// Discontinuous key press
 			// // console.log(that.getFullState())
