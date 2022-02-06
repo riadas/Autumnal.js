@@ -1,14 +1,14 @@
 /**
  * params {**kwargs} any number of arguments which will be used in the game
  */
- // console.log('this is running');
+ // // console.log('this is running');
 var BasicGame = function (gamejs, args) {
 	var that = Object.create(BasicGame.prototype);
 	var MAX_SPRITES = 10000;
 
 	that.default_mapping = {'w': ['wall'], 'A': ['avatar']};
 
-	var block_size = 10;
+	var block_size = 20;
 	var load_save_enabled = true;
 	var disableContinuousKeyPress = true;
 	var image_dir = '../../images/';
@@ -38,7 +38,7 @@ var BasicGame = function (gamejs, args) {
 		that[arg] = args[arg];
 	}
 
-	that.block_size = block_size*5
+	that.block_size = 20; // block_size*5
 
 
 	// that.use_images = ['error.png'];
@@ -67,7 +67,11 @@ var BasicGame = function (gamejs, args) {
 	that.conditions = [];
 	// resource properties
 	that.resources_limits = new defaultDict(2);
-	that.resources_colors = new defaultDict(GOLD);
+  that.resources_colors = new defaultDict(GOLD);
+  
+  // AUTUMN-RELATED SAVING 
+  that.history = [];
+  that.user_events = [];
 
 	that.is_stochastic = false;
 	that._lastsaved = null;
@@ -102,7 +106,7 @@ var BasicGame = function (gamejs, args) {
 		var window_width = window.innerWidth/1.5;
 		var window_height = window.innerHeight/2;
 
-		that.block_size =parseInt(Math.min(window_height/that.height, window_width/that.width));
+		that.block_size = 20; //parseInt(Math.min(window_height/that.height, window_width/that.width));
 		that.screensize = [that.width*that.block_size, that.height*that.block_size];
 
 		//Set up resources
@@ -163,7 +167,7 @@ var BasicGame = function (gamejs, args) {
 		keys.forEach(function (key) {
 
 			if (that.num_sprites > MAX_SPRITES) {
-				console.log('Sprite limit reached.');
+				// console.log('Sprite limit reached.');
 				return;
 			}
 			var [sclass, args, stypes] = that.sprite_constr[key];
@@ -516,7 +520,16 @@ var BasicGame = function (gamejs, args) {
 			}
 		};
 
-		delete object_data["wall"];
+    delete object_data["wall"];
+    
+    // console.log("object_cur");
+    // console.log(object_cur);
+    // console.log("object_data");
+    // console.log(object_data);
+    // console.log("actions");
+    // console.log(actions);
+    // console.log("that.effectList");
+    // console.log(that.effectList);
 
 		return {'frame': that.time,
 				'score': that.bonus_score,
@@ -684,7 +697,7 @@ var BasicGame = function (gamejs, args) {
 
 	that.getFullStateColorized = function (as_string = false) {
 		var fs = that.getFullState(as_string = as_string);
-		var fs_colorized = deepcopy(fs);
+		var fs_colorized = JSON.parse(JSON.stringify(fs));;
 		fs_colorized['objects'] = {};
 		for (sprite_name in fs['objects']) {
 			var [sclass, args, stypes] = that.sprite_constr[sprite_name];
@@ -701,7 +714,8 @@ var BasicGame = function (gamejs, args) {
 				}
 			}
 		}
-
+    // console.log("FS_COLORIZED");
+    // console.log(fs_colorized);
 		return fs_colorized;
 	}
 
@@ -732,8 +746,8 @@ var BasicGame = function (gamejs, args) {
 					s._draw(that);
 			} catch (err) {
 				if ((!s.crashed)) {
-				console.log('cannot draw', s.name);
-				console.log(err)
+				// console.log('cannot draw', s.name);
+				// console.log(err)
 				s.crashed = true
 				}
 			}
@@ -747,8 +761,8 @@ var BasicGame = function (gamejs, args) {
 					sprite.update(that);
 			} catch (err) {
 				if ((!sprite.crashed)) {
-					console.log('could not update', sprite.name)
-					console.log(err);
+					// console.log('could not update', sprite.name)
+					// console.log(err);
 					sprite.crashed = true;
 				}
 				
@@ -851,7 +865,7 @@ var BasicGame = function (gamejs, args) {
 		while (Object.keys(new_collisions).length && loop < 7) {
 			loop ++;
 			if (loop > 5) {
-				console.log('resolving too many collisions');
+				// console.log('resolving too many collisions');
 			}
 			
 			new_collisions = {};
@@ -1033,7 +1047,7 @@ var BasicGame = function (gamejs, args) {
 					that.image_dict[image] = gamejs.image.load(image_dir + image);
 				} catch (err) {
 					that.image_dict[image] = gamejs.image.load(image_dir + 'error.png');	
-					console.log(`could not load imag {image_dir}{image}`, err)
+					// console.log(`could not load imag {image_dir}{image}`, err)
 				}
 			})
 		}
@@ -1087,7 +1101,7 @@ var BasicGame = function (gamejs, args) {
 		// disableContinuousKeyPress = Object.keys(that.all_objects).every(function (k) {
 		// 	return that.all_objects[k]['sprite'].physicstype.__name__ == 'GridPhysics';
 		// });
-		// console.log(disableContinuousKeyPress)
+		// // console.log(disableContinuousKeyPress)
 
 
 		var objects = that.getObjects();
@@ -1126,7 +1140,8 @@ var BasicGame = function (gamejs, args) {
 		// disableContinuousKeyPress = false;
 
 		gamejs.event.onKeyDown (event => {
-			if (!(that.keywait[event.key])) 
+      if (!(that.keywait[event.key])) 
+        // // console.log(event.key);
 				that.keystate[event.key] = true;
 			
 		});
@@ -1156,6 +1171,7 @@ var BasicGame = function (gamejs, args) {
 			if (that.paused) return;
 
 			if (that.ended) {
+        // console.log("DONE!");
 				if (that.win) {
 					$('#score-value').text(that.bonus_score);
 					that.real_start_time = 0;
@@ -1168,9 +1184,12 @@ var BasicGame = function (gamejs, args) {
 				return
 			};
 
+      console.log(that.keystate);
+      console.log(that.keystate);
+      console.log("that.getFullStateColorized()");
+      console.log(that.getFullStateColorized());
 
-
-			// console.log(that.kill_list);
+			// // console.log(that.kill_list);
 
 			new_time = new Date().getTime();
 			ms = (new_time - pre_time);
@@ -1206,7 +1225,7 @@ var BasicGame = function (gamejs, args) {
 			that.time ++;
 
 			// Discontinuous key press
-			// console.log(that.getFullState())
+			// // console.log(that.getFullState())
 			if (disableContinuousKeyPress) {
 				Object.keys(that.keystate).forEach(key => {
 					if (that.keystate[key]) {
@@ -1218,9 +1237,7 @@ var BasicGame = function (gamejs, args) {
       }
       
       // can try to save canvas state here! perhaps save all the canvas states and then save them
-      // to disk after termination.
-
-      
+      // to disk after termination.      
 
 		})
 

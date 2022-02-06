@@ -27,84 +27,6 @@
 
     <script type='text/javascript'>
 
-        var vgdl_game = {level: `1.............................
-000...........................
-000...........................
-..............................
-..............................
-..............................
-..............................
-....000......000000.....000...
-...00000....00000000...00000..
-...0...0....00....00...00000..
-................A.............`,
-                         game : `BasicGame
-    SpriteSet
-        base    > Immovable    color=MPUYEI
-        avatar  > FlakAvatar   stype=sam color=DARKBLUE
-        sam  > Missile orientation=UP    color=PINK singleton=True
-        bomb > Missile orientation=DOWN  color=RED  speed=0.5
-        alienGreen > Bomber stype=bomb cooldown=3 prob=.01 speed=0.6 color=LIGHTGREEN
-        alienBlue > Bomber stype=bomb cooldown=3 prob=.01 speed=0.6 color=GOLD
-        portalSlow  > SpawnPoint stype=alienBlue  cooldown=16  total=20 color=ORANGE 
-        portalFast  > SpawnPoint invisible=True hidden=True stype=alienGreen  cooldown=12   total=20 color=LIGHTGRAY
-
-    LevelMapping
-        0 > base
-        1 > portalSlow
-        2 > portalFast
-
-    TerminationSet
-        SpriteCounter      stype=avatar               limit=0 win=False
-        MultiSpriteCounter stype1=portalSlow stype2=portalFast stype3=alienGreen stype4=alienBlue limit=0 win=True bonus=10
-	Timeout limit=2000 win=False
-
-    InteractionSet
-        avatar  EOS  > stepBack
-        alienGreen   EOS  > turnAround
-        alienBlue   EOS  > turnAround
-        sam EOS  > killSprite
-        bomb EOS  > killSprite
-
-        base bomb > killSprite
-        bomb base > killSprite
-        base sam > killSprite 
-        base sam > scoreChange value=1
-        sam base > killSprite
-
-        base   alienBlue > killSprite
-        base   alienGreen > killSprite
-        avatar alienBlue > killSprite 
-        avatar alienBlue > scoreChange value=-1
-        avatar alienGreen > killSprite 
-        avatar alienGreen > scoreChange value=-1
-	alienGreen sam > scoreChange value=2
-	alienBlue sam > scoreChange value=2
-        avatar bomb  > killSprite 
-        avatar bomb > scoreChange value=-1
-        alienGreen  sam   > killSprite 
-        alienBlue  sam   > killSprite 
-
-        sam avatar > nothing
-        sam portalSlow > nothing
-        sam portalFast > nothing
-        alienGreen alienGreen > nothing
-        alienGreen alienBlue > nothing
-        alienBlue alienGreen > nothing
-        alienBlue alienBlue > nothing`};
-
-
-        var exp_id = '0';
-        var data = {};
-        data.real = 'gvgai_aliens'
-        data.name = 'Aliens'
-        data.desc = 0
-        data.level = 0
-        data.pair = 0
-        data.next = true
-        
-        var show_score = true
-
         require.setModuleRoot('../..');
         require.run('play_game');
     </script>
@@ -112,12 +34,69 @@
 <style>
 #score{
     font-size:20px;
+    display: none;
 }
+
+#header {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: left; 
+}
+
+.example-button {
+  width: 130px;
+  font-size: 12px;
+}
+
+.active {
+  background-color: gold;
+}
+
+#game-body {
+  margin-top: -40px;
+}
+
+.flex-buttons {
+  margin-top: -15px;
+}
+
+.flex-button {
+  margin: 5px;
+}
+
 </style>
 <body>
     <div class="Flex-Container">
         <div id='header' class="Flex-Container">
-          <h1 id="title">Aliens</h1>
+          <button id="aliens-button" class="flex-button example-button active">ALIENS</button>
+          <button id="antagonist-button" class="flex-button example-button">ANTAGONIST</button>
+          <button id="avoidgeorge-button" class="flex-button example-button">AVOIDGEORGE</button>
+          <button id="bait-button" class="flex-button example-button">BAIT</button>
+          <button id="beesandbirds-button" class="flex-button example-button">BEES AND BIRDS</button>
+          <button id="boulderdash-button" class="flex-button example-button">BOULDER DASH</button>
+          <button id="butterflies-button" class="flex-button example-button">BUTTERFLIES</button>
+          <button id="chase-button"  class="flex-button example-button">CHASE</button>
+          <button id="closinggates-button" class="flex-button example-button">CLOSING GATES</button>
+          <button id="corridor-button" class="flex-button example-button">CORRIDOR</button>
+          <button id="exploreexploit-button" class="flex-button example-button">EXPLORE/EXPLOIT</button>
+          <button id="frogs-button"  class="flex-button example-button">FROGS</button>
+          <button id="helper-button" class="flex-button example-button">HELPER</button>
+          <button id="jaws-button"  class="flex-button example-button">JAWS</button>
+          <button id="lemmings-button"  class="flex-button example-button">LEMMINGS</button>
+          <button id="missilecommand-button" class="flex-button example-button">MISSILE COMMAND</button>
+          <button id="myaliens-button"  class="flex-button example-button">MY ALIENS</button>
+          <button id="plaqueattack-button"  class="flex-button example-button">PLAQUE ATTACK</button>
+          <button id="portals-button" class="flex-button example-button">PORTALS</button>
+          <button id="preconditions-button" class="flex-button example-button">PRECONDITIONS</button>
+          <button id="pushboulders-button" class="flex-button example-button">PUSH BOULDERS</button>
+          <button id="relational-button" class="flex-button example-button">RELATIONAL</button>
+          <button id="sokoban-button" class="flex-button example-button">SOKOBAN</button>
+          <button id="surprise-button" class="flex-button example-button">SURPRISE</button>
+          <button id="survivezombies-button" class="flex-button example-button">SURVIVE ZOMBIES</button>
+          <button id="watergame-button" class="flex-button example-button">WATER GAME</button>
+          <button id="zelda-button" class="flex-button example-button">ZELDA</button>
         </div> 
         <div id='message'>
         </div>
@@ -130,25 +109,20 @@
 
         </div>
         <div class="flex-buttons">
-            <div class="flex-button" id='start-div'>
-                <button id="start">Start</button>
-            </div>
-        </div>
-        <div class="flex-buttons">
+            <div class="flex-button" id='pause-div'>
+              <button id="pause">Start</button>
+            </div>            
+
             <div class="flex-button" id='retry-div'>
-                <button id="retry">Retry</button>
+              <button style="display: none;" id="retry">Retry</button>
             </div>
-            
+            <div class="flex-button" id='return-div'>
+              <button style="display: none;" id="return">Return to Games</button>
+            </div>
 
             
-            <div class="flex-button" id='next-div'>  
-                <button id='next'>Next Instance</button>
-            </div>
-            
-        </div>
-        <div class="flex-buttons">
-            <div class="flex-button" id="return-div">
-                <button id="return">Return to Games List</button>
+            <div class="flex-button" id='save-div'>
+              <button style="display: none;" id="save">Save</button>
             </div>
         </div>
     </div>
