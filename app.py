@@ -16,9 +16,12 @@ def send_js(path):
 @app.route("/users/<user_id>", methods=["POST"])
 def save(user_id):
   print("request.json")
-  print(request.json)
-  with open('json_data.json', 'w') as outfile:
-    directory = "traces/user_"+str(user_id)
-    if not os.path.isdir(directory):
-      os.mkdir(directory)  
-    json.dump(json.dumps(request.json), directory + "/" + "TIME_" + str(datetime.now()))
+  print(request)
+  data = json.loads(request.data, strict=False)
+  print(data)
+  directory = "traces/user_"+str(user_id)
+  if not os.path.isdir(directory):
+    os.mkdir(directory)  
+  with open(directory + "/TIME_" + str(datetime.now()), 'w') as outfile:
+    json.dump(json.dumps(data), outfile)
+  return "True"

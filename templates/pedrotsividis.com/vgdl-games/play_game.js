@@ -167,6 +167,7 @@ function getRandomInt(min, max) {
 }
 
 $(document).ready(function () {
+  const host = "http://localhost:5000";
   var game_name = localStorage.getItem("game_name");
   user_id = localStorage.getItem("user_id");
   console.log("GAME_NAME? "+game_name);
@@ -230,6 +231,20 @@ $(document).ready(function () {
     console.log("SAVE!")
     history_json = { "history" : game.history, "user_events": game.user_events, "game_name" : data.name };
     console.log(history_json);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", host + '/users/' + user_id, true);
+
+    //Send the proper header information along with the request
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () { // Call a function when the state changes.
+      if (this.readyState === 4 && this.status === 200) {
+        console.log("SAVED!");
+      }
+    };
+
+    xhr.send(JSON.stringify(history_json));
   }
 
   $(document).on('click', '#save', save);
