@@ -167,7 +167,8 @@ function getRandomInt(min, max) {
 }
 
 $(document).ready(function () {
-  const host = "http://localhost:5000";
+  // const host = "http://localhost:5000";
+  const host = "https://vgdl-experiment.herokuapp.com";
   var game_name = localStorage.getItem("game_name");
   user_id = localStorage.getItem("user_id");
   console.log("GAME_NAME? "+game_name);
