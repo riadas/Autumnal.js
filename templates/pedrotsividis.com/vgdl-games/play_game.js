@@ -167,8 +167,8 @@ function getRandomInt(min, max) {
 }
 
 $(document).ready(function () {
-  // const host = "http://localhost:5000";
-  const host = "https://vgdl-experiment.herokuapp.com";
+  const host = "http://localhost:5000";
+  // const host = "https://vgdl-experiment.herokuapp.com";
   var game_name = localStorage.getItem("game_name");
   user_id = localStorage.getItem("user_id");
   console.log("GAME_NAME? "+game_name);
@@ -230,7 +230,20 @@ $(document).ready(function () {
   
   save = function () {
     console.log("SAVE!")
-    history_json = { "history" : game.history, "user_events": game.user_events, "game_name" : data.name };
+
+    var canvas = document.getElementById('gjs-canvas');
+    var width = canvas.width;
+    var height = canvas.height;
+
+    var user_events = [];
+    for (const obs of game.history) {
+      user_events.push(obs["actions"])
+    }
+
+    console.log("user_events");
+    console.log(user_events);
+
+    history_json = { "history" : game.history, "user_events": user_events, "game_name" : data.name, "grid_size" : [width, height] };
     console.log(history_json);
 
     var xhr = new XMLHttpRequest();
@@ -2062,7 +2075,7 @@ var switch_game = function (game_name) {
     exp_id = '0';
     data = {};
     data.real = 'expt_ee';
-    data.name = 'Explore/Exploit';
+    data.name = 'Explore_Exploit';
     data.desc = 0;
     data.level = 0;
     data.pair = 0;
