@@ -277,6 +277,76 @@ $(document).ready(function () {
 // // once all components and resources are ready.
 // gamejs.ready(main);
 
+var jaws_game = {level: `.....................
+..........A..........
+....................1
+2....................
+....................1
+2....................
+....................1
+2....................
+..........3..........
+`,
+                         game : `BasicGame
+    SpriteSet
+        sharkhole  > SpawnPoint color=LKLWDD stype=shark  prob=0.025 total=1  
+        whalehole  > SpawnPoint color=DLLJEV stype=whale  prob=0.1 cooldown=10 
+        piranhahole  >  SpawnPoint color=GREEN stype=piranha  prob=0.1 cooldown=10  
+
+
+        avatar  > ShootAvatar color=DARKBLUE  stype=torpedo 
+        torpedo > Missile color=WHITE  
+        shark  > Chaser speed=0.1 cooldown=2 color=ORANGE  stype=avatar
+        whale  > Missile  orientation=RIGHT  speed=0.1 color=BROWN 
+        piranha > Missile orientation=LEFT speed=0.1 color=RED 
+
+        shell > Resource color=YELLOW limit=20 
+        sharkFang > Resource color=GOLD limit=1 
+
+
+    LevelMapping
+        1 > piranhahole
+        2 > whalehole
+        3 > sharkhole
+        A > avatar
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        Timeout limit=500 win=True bonus=0.02
+
+    InteractionSet
+        EOS avatar > stepBack
+        avatar EOS > stepBack
+	EOS shark > stepBack
+        EOS torpedo  > killSprite
+
+	EOS shark > killSprite
+        EOS whale > killSprite
+        EOS piranha > killSprite
+
+        torpedo shark > killSprite
+        torpedo whale > killSprite
+        torpedo piranha > killSprite
+
+	whale torpedo > scoreChange value=1
+        whale torpedo > transformTo stype=shell 
+	
+	piranha torpedo > scoreChange value=1
+        piranha torpedo > transformTo stype=shell 
+	
+
+        sharkFang avatar > collectResource 
+	sharkFang avatar > scoreChange value=1000
+        shell avatar > collectResource 
+	shell avatar > scoreChange value=1
+
+        avatar shark > spawnIfHasMore resource=shell limit=15 stype=sharkFang
+        shark avatar > killIfOtherHasMore resource=shell limit=15
+
+        avatar shark  > killIfHasLess resource=shell limit=15
+        avatar whale  > killSprite
+	avatar piranha > killSprite`};
+
 var zelda_game = {level: `wwwwwwwwwwwww
 wA.......w..w
 w..w........w
@@ -1126,76 +1196,6 @@ wwwwwwwwwwwwwwwwwwwww
 	lemming goal > scoreChange value=2
 `};
 
-var jaws_game = {level: `.....................
-..........A..........
-....................1
-2....................
-....................1
-2....................
-....................1
-2....................
-..........3..........
-`,
-                         game : `BasicGame
-    SpriteSet
-        sharkhole  > SpawnPoint color=LKLWDD stype=shark  prob=0.025 total=1  
-        whalehole  > SpawnPoint color=DLLJEV stype=whale  prob=0.1 cooldown=10 
-        piranhahole  >  SpawnPoint color=GREEN stype=piranha  prob=0.1 cooldown=10  
-
-
-        avatar  > ShootAvatar color=DARKBLUE  stype=torpedo 
-        torpedo > Missile color=WHITE  
-        shark  > Chaser speed=0.1 cooldown=2 color=ORANGE  stype=avatar
-        whale  > Missile  orientation=RIGHT  speed=0.1 color=BROWN 
-        piranha > Missile orientation=LEFT speed=0.1 color=RED 
-
-        shell > Resource color=YELLOW limit=20 
-        sharkFang > Resource color=GOLD limit=1 
-
-
-    LevelMapping
-        1 > piranhahole
-        2 > whalehole
-        3 > sharkhole
-        A > avatar
-
-    TerminationSet
-        SpriteCounter stype=avatar limit=0 win=False
-        Timeout limit=500 win=True bonus=0.02
-
-    InteractionSet
-        EOS avatar > stepBack
-        avatar EOS > stepBack
-	EOS shark > stepBack
-        EOS torpedo  > killSprite
-
-	EOS shark > killSprite
-        EOS whale > killSprite
-        EOS piranha > killSprite
-
-        torpedo shark > killSprite
-        torpedo whale > killSprite
-        torpedo piranha > killSprite
-
-	whale torpedo > scoreChange value=1
-        whale torpedo > transformTo stype=shell 
-	
-	piranha torpedo > scoreChange value=1
-        piranha torpedo > transformTo stype=shell 
-	
-
-        sharkFang avatar > collectResource 
-	sharkFang avatar > scoreChange value=1000
-        shell avatar > collectResource 
-	shell avatar > scoreChange value=1
-
-        avatar shark > spawnIfHasMore resource=shell limit=15 stype=sharkFang
-        shark avatar > killIfOtherHasMore resource=shell limit=15
-
-        avatar shark  > killIfHasLess resource=shell limit=15
-        avatar whale  > killSprite
-  avatar piranha > killSprite`};
-  
 var helper_game = {level: `wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 w                              w
 w                              w
@@ -1517,8 +1517,6 @@ wwwwwwwwwwwwwwwww`,
         wall > Immovable color=DARKGRAY
         avatar > MovingAvatar color=DARKBLUE
         goal > Immovable color=GREEN
-        cannonup > SpawnPoint stype=up limit=5 cooldown=10 prob=.5 color=DARKGRAY
-        cannondown > SpawnPoint stype=down limit=5 cooldown=10 prob=.5 color=DARKGRAY
         missile > Missile speed=.5 cooldown=12
             up > orientation=UP color=ORANGE
             down > orientation=DOWN color=RED
@@ -2001,7 +1999,7 @@ var switch_game = function (game_name) {
     exp_id = '0';
     data = {};
     data.real = 'gvgai_bees_and_birds';
-    data.name = 'Bees and birds';
+    data.name = 'bees_and_birds';
     data.desc = 0;
     data.level = 0;
     data.pair = 0;
@@ -2211,7 +2209,7 @@ var switch_game = function (game_name) {
     
     show_score = true;
 
-  }  else if (game_name == "relational-button") {
+  } else if (game_name == "relational-button") {
     vgdl_game = relational_game;
     exp_id = '0';
     data = {};

@@ -696,14 +696,36 @@ var BasicGame = function (gamejs, args) {
 	}
 
 	that.getFullStateColorized = function (as_string = false) {
-		var fs = that.getFullState(as_string = as_string);
+    var fs = that.getFullState(as_string = as_string); // JSON.parse(JSON.stringify(that.getFullState(as_string = as_string)));
+    // console.log("fs[objects]")
+    // console.log(fs['objects'])
 		var fs_colorized = JSON.parse(JSON.stringify(fs));;
-		fs_colorized['objects'] = {};
+    fs_colorized['objects'] = {};
+    // console.log("fs_colorized['objects'] 1");
+    // console.log(fs_colorized['objects']);
 		for (sprite_name in fs['objects']) {
+      // console.log("sprite_name");
+      // console.log(sprite_name);
 			var [sclass, args, stypes] = that.sprite_constr[sprite_name];
-			try {
-				fs_colorized['objects'][colorDict[args['color'].toString()]] = fs['objects'][sprite_name];
-			} catch (e) {
+      // console.log("args");
+      // console.log(args);
+      // console.log("stypes");
+      // console.log(stypes);
+      try {
+        var color = colorDict[args['color'].toString()];
+        if (color in fs['objects']) {
+          fs_colorized['objects'][colorDict[args['color'].toString()]] = fs['objects'][sprite_name];
+        } else {
+          fs_colorized['objects'][colorDict[args['color'].toString()]] =  {...fs_colorized['objects'][colorDict[args['color'].toString()]], ...fs['objects'][sprite_name]};
+        }
+        // console.log("made it!");
+        // console.log("colorDict[args['color'].toString()");
+        // console.log(colorDict[args['color'].toString()]);
+        // console.log("fs['objects'][sprite_name]");
+        // console.log(fs['objects'][sprite_name]);
+        // console.log("fs_colorized['objects']");
+        // console.log(JSON.stringify(fs_colorized['objects']));
+      } catch (e) {
 				var sprite_type = [];
 				if (stypes[0] in that.sprite_groups) 
 					sprite_type = that.sprite_groups[stypes[0]];
@@ -711,11 +733,13 @@ var BasicGame = function (gamejs, args) {
 				if (sprite_type.length > 0) {
 					var sprite_rep = sprite_type[0];
 					fs_colorized['objects'][colorDict[sprite_rep.color.toString()]] = fs['objects'][sprite_name];
-				}
+        }
+        console.log("what about here?")
 			}
-		}
-    // console.log("FS_COLORIZED");
-    // console.log(fs_colorized);
+    }
+    console.log("-----NEW DEBUGGING")
+    console.log("FS_COLORIZED");
+    console.log(fs_colorized);
 		return fs_colorized;
 	}
 
@@ -1224,6 +1248,8 @@ var BasicGame = function (gamejs, args) {
       console.log(that.keystate);
       console.log("that.getFullStateColorized()");
       console.log(that.getFullStateColorized());
+      console.log("NEW HERE: that.getFullState()");
+      console.log(that.getFullState());
       
       that.user_events.push(that.keystate);
       that.history.push(that.getFullStateColorized());
