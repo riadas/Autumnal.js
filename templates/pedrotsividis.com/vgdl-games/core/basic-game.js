@@ -33,7 +33,7 @@ var BasicGame = function (gamejs, args) {
 			//INIT
 
 	//grab all arguments
-	that.frame_rate = 20;
+	that.frame_rate = 30;
 	for (arg in args) {
 		that[arg] = args[arg];
 	}
@@ -734,12 +734,12 @@ var BasicGame = function (gamejs, args) {
 					var sprite_rep = sprite_type[0];
 					fs_colorized['objects'][colorDict[sprite_rep.color.toString()]] = fs['objects'][sprite_name];
         }
-        console.log("what about here?")
+        // console.log("what about here?")
 			}
     }
-    console.log("-----NEW DEBUGGING")
-    console.log("FS_COLORIZED");
-    console.log(fs_colorized);
+    // console.log("-----NEW DEBUGGING")
+    // console.log("FS_COLORIZED");
+    // console.log(fs_colorized);
 		return fs_colorized;
 	}
 
@@ -1216,12 +1216,22 @@ var BasicGame = function (gamejs, args) {
 
 			if (ms < mpf) return;
 
-			pre_time = new_time;
+      pre_time = new_time;
+      
+      console.log("that.keystate");
+      console.log(that.keystate);
+      console.log("that.getFullStateColorized()");
+      console.log(that.getFullStateColorized());
+      // console.log("NEW HERE: that.getFullState()");
+      // console.log(that.getFullState());
+
+      // that.user_events.push(that.keystate);
+      // that.history.push(that.getFullStateColorized());
 
 			$('#score-value').text(that.score);
 
 			that._terminationHandling();
-			that._eventHandling();
+			that._eventHandling(); // this performs changes
 
 			// that.background.fill(LIGHTGRAY);
 			that.background.fill(LIGHTGRAY);
@@ -1244,12 +1254,12 @@ var BasicGame = function (gamejs, args) {
 
       that.time ++;
       
-      console.log("that.keystate");
-      console.log(that.keystate);
-      console.log("that.getFullStateColorized()");
-      console.log(that.getFullStateColorized());
-      console.log("NEW HERE: that.getFullState()");
-      console.log(that.getFullState());
+      // console.log("that.keystate");
+      // console.log(that.keystate);
+      // console.log("that.getFullStateColorized()");
+      // console.log(that.getFullStateColorized());
+      // console.log("NEW HERE: that.getFullState()");
+      // console.log(that.getFullState());
       
       that.user_events.push(that.keystate);
       that.history.push(that.getFullStateColorized());
