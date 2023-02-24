@@ -17,6 +17,10 @@ def empa():
 def cisc():
   return render_template("pedrotsividis.com/vgdl-games/games/gvgai_aliens/index.html")  # "<p>Hello, World!</p>"
 
+@app.route("/atari.html")
+def atari():
+  return render_template("pedrotsividis.com/vgdl-games/games/gvgai_aliens/atari.html")  # "<p>Hello, World!</p>"
+
 @app.route('/<path:path>')
 def send_js(path):
   return send_from_directory('templates/pedrotsividis.com/vgdl-games', path)
