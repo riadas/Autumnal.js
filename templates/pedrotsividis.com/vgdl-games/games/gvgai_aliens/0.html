@@ -32,6 +32,9 @@
     </script>
 </head>
 <style>
+
+
+
 #score{
     font-size:20px;
     display: none;
@@ -66,9 +69,58 @@
   margin: 5px;
 }
 
+#title {
+        font-size: 30px;
+        color: #ff9400;
+      }
+
+#header2 {
+        height: 55px;
+        align-items: center;
+        border: none;
+        display: flex;
+        padding-left: 15px;
+        color: white;
+        background-color: black;
+        width: 100%;
+        margin-left: 0px;
+        font-family: 'Helvetica Light', 'Lato', sans-serif;
+      }
+
+#cisc-link {
+  font-size: 15px;
+  margin: 0 25px;
+  padding-top: 5px;
+}
+
+#empa-link {
+  color: deepskyblue;
+  font-size: 15px;
+  padding-top: 5px;
+  padding-right: 25px;
+}
+
+#atari-link {
+  font-size: 15px;
+  padding-top: 5px;
+}
+
+a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.global-header.active {
+  color: deepskyblue;
+}
+
+
 </style>
 <body>
     <div class="Flex-Container">
+        <div id="header2">
+            <span id="title">🍂 autumnal</span> <a class="global-header" href="cisc.html" id="cisc-link">cisc</a> <a class="global-header" href="empa.html" id="empa-link">empa</a> <a class="global-header" id="atari-link">atari</a>
+          </div>    
         <div id='header' class="Flex-Container">
           <button id="aliens-button" class="flex-button example-button active">ALIENS</button>
           <button id="antagonist-button" class="flex-button example-button">ANTAGONIST</button>
@@ -135,10 +187,6 @@
         <p>This could take a couple of seconds.</p>
     </div>
   </div>
-
-  <script>
-    
-  </script>
 
 </body>
 </html>
