@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-  return redirect(url_for('empa'))  # "<p>Hello, World!</p>"
+  return redirect(url_for('cisc'))  # "<p>Hello, World!</p>"
 
 @app.route("/empa.html")
 def empa():
