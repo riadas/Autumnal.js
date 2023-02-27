@@ -3820,6 +3820,8 @@ function river2Click() {
         if (Array.isArray(sexpr)) { 
           if (sexpr[0] == "program") {
             return {"head" : "program", "args" : sexpr.slice(1).map(line => s_to_a(line))};
+          } else if (sexpr[0] == "#") {
+            return {"head" : "#", "args": []};
           } else if (sexpr[0] == "if") {
             return {"head" : "if", "args" : [s_to_a(sexpr[1]), s_to_a(sexpr[3]), s_to_a(sexpr[5])]};
           } else if (sexpr[0] == "initnext") {
@@ -5374,9 +5376,7 @@ function jslibapl(f, args, env) {
 
 function interpret(aex, env) {
   // console.log("INTERPRET GLOBAL")
-  // console.log(aex)
   if (isaexpr(aex)) {
-    // console.log(aex.head)
     if (aex.head == "if") {
       var [c, t, e] = aex.args; 
       var [v, env2] = interpret(c, env);
@@ -5401,7 +5401,7 @@ function interpret(aex, env) {
       return interpret_list(aex.args, env);
     } else if (aex.head == "typedecl") {
       return [aex, env];
-    } else if (aex.head == "%%") {
+    } else if (aex.head == "#") {
       return [aex, env];
     } else if (aex.head == "let") {
       return interpret_let(aex.args, env);
