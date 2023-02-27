@@ -5401,6 +5401,8 @@ function interpret(aex, env) {
       return interpret_list(aex.args, env);
     } else if (aex.head == "typedecl") {
       return [aex, env];
+    } else if (aex.head == "%%") {
+      return [aex, env];
     } else if (aex.head == "let") {
       return interpret_let(aex.args, env);
     } else if (aex.head == "lambda") {
