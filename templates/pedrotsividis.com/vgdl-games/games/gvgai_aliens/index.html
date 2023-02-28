@@ -5008,6 +5008,21 @@ function unfold(args, state=null) {
   return V;
 }
 
+function average(args, state=null) {
+  var array = args[0];
+  if (array.length == 0) {
+    return 0;
+  } else {
+    if (typeof(array[0]) == 'number') {
+      return Math.floor(array.reduce((a, b) => a + b) / array.length);
+    } else if (array[0].x != undefined) { // position
+      var x = average([array.map(p => p.x)]);
+      var y = average([array.map(p => p.y)]);
+      return {"x" : x, "y" : y};
+    }
+  }
+}
+
 // exports 
 // module.exports = { ObjectType,
 //                    Position, 
@@ -5263,6 +5278,7 @@ var lib_to_func = {"ObjectType" : ObjectType,
                    "nextSolid" : nextSolid,
                    "allPositions" : allPositions,
                    "unfold" : unfold,
+                   "average" : average,
                   }
 
 function islib(f) {
