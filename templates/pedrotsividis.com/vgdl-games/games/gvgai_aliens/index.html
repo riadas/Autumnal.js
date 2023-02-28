@@ -4586,6 +4586,32 @@ function unitVector(args, state=null) {
   }
 }
 
+function unitVectorRand(args, state=null) {
+  // console.log("UNITVECTOR");
+  // console.log(args);
+  if (args.length == 2) {
+    var [a, b] = args;
+    if (a.id == undefined && b.id == undefined) {
+      var deltaX = b.x - a.x;
+      var deltaY = b.y - a.y;
+      if (Math.floor(Math.abs(Math.sign(deltaX))) == 1 && Math.floor(Math.abs(Math.sign(deltaY))) == 1) {
+        return uniformChoice([Position(Math.sign(deltaX), 0), Position(0, Math.sign(deltaY))])
+      } else {
+        return Position([Math.sign(deltaX), Math.sign(deltaY)])  
+      }
+    } else if (a.id != undefined && b.id == undefined) {
+      return unitVector([a.origin, b]);
+    } else if (a.id == undefined && b.id != undefined) {
+      return unitVector([a, b.origin]);
+    } else if (a.id != undefined && b.id != undefined) {
+      return unitVector([a.origin, b.origin]);
+    }
+  } else {
+    var position = args[0];
+    return unitVector([Position([0, 0]), position]);
+  }
+}
+
 function displacement(args, state=null) {
   if (args[0].color != undefined) { // cell version
     var [cell1, cell2] = args;
@@ -5257,6 +5283,7 @@ var lib_to_func = {"ObjectType" : ObjectType,
                    "isFree" : isFree,
                    "rect" : rect,
                    "unitVector" : unitVector,
+                   "unitVectorRand": unitVectorRand,
                    "displacement" : displacement,
                    "adjacent" : adjacent,
                    "adjacentObjs" : adjacentObjs,
