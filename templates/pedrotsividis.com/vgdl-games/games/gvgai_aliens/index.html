@@ -4203,8 +4203,8 @@ function occurred(args, state=null) {
 function uniformChoice(args, state=null) {
   // console.log("UNIFORMCHOICE");
   var freePositions = args[0];
-  // console.log("freePositions");
-  // console.log(freePositions);
+  console.log("freePositions");
+  console.log(freePositions);
   if (args.length == 1) {
     return freePositions[Math.floor(Math.random()*freePositions.length)];
   } else {
@@ -4587,24 +4587,27 @@ function unitVector(args, state=null) {
 }
 
 function unitVectorRand(args, state=null) {
-  // console.log("UNITVECTOR");
+  // console.log("UNITVECTORRAND");
   // console.log(args);
   if (args.length == 2) {
     var [a, b] = args;
     if (a.id == undefined && b.id == undefined) {
       var deltaX = b.x - a.x;
       var deltaY = b.y - a.y;
+      // console.log(deltaX);
+      // console.log(deltaY);
       if (Math.floor(Math.abs(Math.sign(deltaX))) == 1 && Math.floor(Math.abs(Math.sign(deltaY))) == 1) {
-        return uniformChoice([Position(Math.sign(deltaX), 0), Position(0, Math.sign(deltaY))])
+        return uniformChoice([[Position([Math.sign(deltaX), 0]), Position([0, Math.sign(deltaY)])]])
       } else {
+        console.log("pop2");
         return Position([Math.sign(deltaX), Math.sign(deltaY)])  
       }
     } else if (a.id != undefined && b.id == undefined) {
-      return unitVector([a.origin, b]);
+      return unitVectorRand([a.origin, b]);
     } else if (a.id == undefined && b.id != undefined) {
-      return unitVector([a, b.origin]);
+      return unitVectorRand([a, b.origin]);
     } else if (a.id != undefined && b.id != undefined) {
-      return unitVector([a.origin, b.origin]);
+      return unitVectorRand([a.origin, b.origin]);
     }
   } else {
     var position = args[0];
