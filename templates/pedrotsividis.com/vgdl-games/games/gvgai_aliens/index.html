@@ -1015,17 +1015,29 @@
             if (!history_mode && (intervalID != -1)) {
               switch (event.key) {
                 case "ArrowLeft":
-                  user_event = {"left" : true, "right" : false, "up" : false, "down" : false, "click" : null}
+                  user_event = {"left" : true, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false}
                   break;
                 case "ArrowRight":
-                user_event = {"left" : false, "right" : true, "up" : false, "down" : false, "click" : null}
+                  user_event = {"left" : false, "right" : true, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false}
                   break;
                 case "ArrowUp":
-                user_event = {"left" : false, "right" : false, "up" : true, "down" : false, "click" : null}
+                user_event = {"left" : false, "right" : false, "up" : true, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false}
                   break;
                 case "ArrowDown":
-                  user_event = {"left" : false, "right" : false, "up" : false, "down" : true, "click" : null}
-                  break; 
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : true, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false}
+                  break;                  
+                case "a":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : true, "right2" : false, "up2" : false, "down2" : false}
+                  break;
+                case "d":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : true, "up2" : false, "down2" : false}
+                  break;
+                case "w":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : true, "down2" : false}
+                  break;
+                case "s":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : true}
+                  break;
               }
 
               env = step(aex, env, user_event);
@@ -5593,6 +5605,14 @@ function interpret(aex, env) {
       return [env.up, env];
     } else if (aex == "down") {
       return [env.down, env];
+    } else if (aex == "left2") {
+      return [env.left2, env];
+    } else if (aex == "right2") { 
+      return [env.right2, env];
+    } else if (aex == "up2") {
+      return [env.up2, env];
+    } else if (aex == "down2") {
+      return [env.down2, env];
     } else if (aex == "click") {
       return [env.click, env];
     } else if (aex == "clicked") {
@@ -6037,6 +6057,10 @@ function start(aex) {
              "right" : false, 
              "up" : false, 
              "down" : false, 
+             "left2" : false, 
+             "right2" : false, 
+             "up2" : false, 
+             "down2" : false,
              "click" : null, 
              "current_var_values" : {},
              "lifted" : {},
@@ -6117,7 +6141,7 @@ function step(aex, env, user_events=null) {
 
 function update_state(env_) {
   // reset user events 
-  for (let user_event of ["left", "right", "up", "down"]) {
+  for (let user_event of ["left", "right", "up", "down", "left2", "right2", "up2", "down2"]) {
     env_[user_event] = false;
   }
   env_["click"] = null;
