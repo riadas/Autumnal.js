@@ -32,6 +32,7 @@
 
       html {
         height: 100%;
+        overflow: hidden;
       }
       
       #content-wrapper {
@@ -321,12 +322,13 @@
               <div style="display: flex; margin-top: 10px;">
                   <button id="play-button" class="control-button" type="submit" id="run" style="margin-right: 10px;">▶</button>
                   <button id="restart-button" class="control-button" type="submit" style="font-size: 15px; font-weight: bold;">↻</button>
-                  <button id="slider-button" class="control-button" type="submit" style="font-size: 15px; font-weight: bold;"><input id="slider" style="width: 90px;" id="pi_input" type="range" min="50" max="300" step="50" value="50"/> </button>
+                  <button id="slider-button" class="control-button" type="submit" style="font-size: 15px; font-weight: bold;"><input id="slider" style="width: 60px;" id="pi_input" type="range" min="50" max="300" step="50" value="50"/> </button>
                 
                   
                   <button id="save-button" style="display: none" class="control-button" type="submit" style="font-size: 15px; font-weight: bold;"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
                   <button id="history-button" style="display: none" class="control-button" type="submit" style="font-size: 15px; font-weight: bold;"><i class="fa fa-history" aria-hidden="true"></i></button>
-                  <button id="toggle-button" class="control-button">TOGGLE VIEW</button>
+                  <button id="toggle2-button" class="control-button">TOGX</button>
+                  <button id="toggle-button" class="control-button">TOGY</button>
               </div>
             </div>
           </div>
@@ -352,6 +354,7 @@
           var client_id = getRandomInt(1, 10000);
           console.log("client_id: "+client_id);
           var grid_size = [16, 16];
+          var cell_size = 25;
           var model_name = "";
           var saved = false;
           var history_mode = false;
@@ -437,6 +440,7 @@
           document.getElementById("river-2-button").addEventListener("click", river2Click);
 
           document.getElementById("toggle-button").addEventListener("click", toggleClick);
+          document.getElementById("toggle2-button").addEventListener("click", toggle2Click);
           document.getElementById("random-button").addEventListener("click", randomClick);
           document.getElementById("random-button-2").addEventListener("click", randomClick2);
           document.getElementById("random-button-3").addEventListener("click", randomClick3);
@@ -519,6 +523,8 @@
             saveButton = document.getElementById("save-button");
             historyButton = document.getElementById("history-button");
             toggleButton = document.getElementById("toggle-button");
+            toggle2Button = document.getElementById("toggle2-button");
+
     
             if (saved) {
               saveButton.classList.add("disabled");
@@ -603,6 +609,8 @@
                 historyButton.classList.remove("history-mode");
                 compileButton.classList.remove("history-mode");
                 toggleButton.classList.remove("history-mode");
+                toggle2Button.classList.remove("history-mode");
+
     
                 playButton.classList.remove("disabled");
                 if (intervalID == -1) {
@@ -638,6 +646,8 @@
                 historyButton.classList.add("history-mode");
                 compileButton.classList.add("history-mode");
                 toggleButton.classList.remove("history-mode");
+                toggle2Button.classList.remove("history-mode");
+
     
                 if (historyIntervalID == -1) {
                   console.log("updateButtonStyles historyIntervalID == -1");
@@ -819,6 +829,8 @@
               aex = null;
               env = null;
 
+              cell_size = 25;
+              
               myCodeMirror.setOption("readOnly", false);
               // particlesClick();
               // reset grid
@@ -840,6 +852,13 @@
               Array.from(document.getElementsByClassName("cell")).forEach(function (cell) { cell.style.background = ""})
 
             } else {
+
+              if (window.innerHeight < 800) {
+                cell_size = 25;
+              } else {
+                cell_size = 35;
+              }
+
               curr_program_str = myCodeMirror.getValue();
               aex = parseau(curr_program_str);
 
@@ -892,7 +911,14 @@
                   // console.log(grid_size)
                   // console.log(typeof(grid_size))
 
-                  cell_size = 25;
+                  // cell_size = 25;
+
+                  if (window.innerHeight < 800) {
+                    cell_size = 25;
+                  } else {
+                    cell_size = 35;
+                  }
+
                   if (Math.max(grid_size[0], grid_size[1]) > 18) {
                     cell_size = Math.round(cell_size * 18/Math.max(grid_size[0], grid_size[1]))
                   }
@@ -904,9 +930,9 @@
                       const button = document.createElement("button")
                       button.classList.add("cell");
                       button.id = i.toString();
-                      button.width = "0px"
-                      button.height = "0px"
-                      button.padding = Math.round(Math.max(cell_size/2 - 1, 1)).toString() + "px"
+                      button.width = "0px";
+                      button.height = "0px";
+                      button.padding = Math.round(Math.max(cell_size/2 - 1, 1)).toString() + "px";
                       button.onclick = function() { console.log(button.id); click(parseInt(button.id));};
                       grid.appendChild(button);
                     }
@@ -1011,6 +1037,39 @@
             }
           });
     
+          window.addEventListener("resize", (event) => { 
+
+            if (window.innerHeight < 800) {
+              cell_size = 25;
+            } else {
+              cell_size = 35;
+            }
+
+            if (Math.max(grid_size[0], grid_size[1]) > 18) {
+              cell_size = Math.round(cell_size * 18/Math.max(grid_size[0], grid_size[1]))
+            }
+
+            Array.from(document.getElementsByClassName("grid")).forEach(function (grid) {
+              grid.innerHTML = "";
+              grid.style = "grid-template-columns: repeat("+grid_size[0]+", "+ cell_size +"px); grid-template-rows: repeat("+grid_size[1]+", " + cell_size + "px);"
+              for (i=0; i < grid_size[0]*grid_size[1]; i++) {
+                const button = document.createElement("button")
+                button.classList.add("cell");
+                button.id = i.toString();
+                button.width = "0px";
+                button.height = "0px";
+                button.padding = Math.round(Math.max(cell_size/2 - 1, 1)).toString() + "px";
+                button.onclick = function() { console.log(button.id); click(parseInt(button.id));};
+                grid.appendChild(button);
+              }
+            });
+
+            var background = env.state.scene.background  
+            var cells = interpret({ "head" : "call", "args": ["renderScene", [env.state.scene]]}, env)[0].map(cell => [cell.position.x, cell.position.y, JSON.stringify(cell.color).slice(8, -2)]);
+
+            updateCellStyles(JSON.stringify([background, cells]));
+
+          });
           
     
           function step_time() {
@@ -3725,6 +3784,24 @@ function river2Click() {
         }
       }
     
+      function toggle2Click() {
+        div1 = document.getElementById("model-input");
+        div2 = document.getElementById("grid-view");
+        if (div1.style.width == "0%") { // split mode
+          div1.style.width = "50%";
+          div2.style.width = "50%";
+        } else { // full screen mode
+          div1.style.width = "0%";
+          div2.style.width = "100%";
+        }
+
+        if (window.innerHeight < 800) {
+          cell_size = 25;
+        } else {
+          cell_size = 35;
+        }
+      }
+
       function randomClick() {
     
         console.log("randomClick")
@@ -4599,7 +4676,7 @@ function unitVectorRand(args, state=null) {
       if (Math.floor(Math.abs(Math.sign(deltaX))) == 1 && Math.floor(Math.abs(Math.sign(deltaY))) == 1) {
         return uniformChoice([[Position([Math.sign(deltaX), 0]), Position([0, Math.sign(deltaY)])]])
       } else {
-        console.log("pop2");
+        // console.log("pop2");
         return Position([Math.sign(deltaX), Math.sign(deltaY)])  
       }
     } else if (a.id != undefined && b.id == undefined) {
