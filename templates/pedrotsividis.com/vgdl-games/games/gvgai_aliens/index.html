@@ -305,6 +305,7 @@
             <button id="spider-button" class="control-button example-button">SPIDER</button>
             <button id="river-1-button" class="control-button example-button">RIVER I</button>
             <button id="river-2-button" class="control-button example-button">RIVER II</button>
+            <button id="pong-button" class="control-button example-button">PONG</button>
 
             <button id="random-button" style="display: none" style="background-color: orange !important" class="control-button">RANDOM SCENE</button>
             <button id="random-button-2" style="display: none; background-color: orange !important" class="control-button">RANDOM PROGRAM</button>
@@ -438,6 +439,7 @@
           document.getElementById("spider-button").addEventListener("click", spiderClick);
           document.getElementById("river-1-button").addEventListener("click", river1Click);
           document.getElementById("river-2-button").addEventListener("click", river2Click);
+          document.getElementById("pong-button").addEventListener("click", pongClick);
 
           document.getElementById("toggle-button").addEventListener("click", toggleClick);
           document.getElementById("toggle2-button").addEventListener("click", toggle2Click);
@@ -511,6 +513,7 @@
             spiderButton = document.getElementById("spider-button");
             river1Button = document.getElementById("river-1-button");
             river2Button = document.getElementById("river-2-button");
+            pongButton = document.getElementById("pong-button");
 
             randomButton = document.getElementById("random-button");
             randomButton2 = document.getElementById("random-button-2");
@@ -591,6 +594,7 @@
               spiderButton.classList.add("disabled");
               river1Button.classList.add("disabled");
               river2Button.classList.add("disabled");
+              pongButton.classList.add("disabled");
 
               plugButton.classList.add("disabled");
               iceButton.classList.add("disabled");
@@ -734,6 +738,7 @@
               spiderButton.classList.remove("disabled");
               river1Button.classList.remove("disabled");
               river2Button.classList.remove("disabled");
+              pongButton.classList.remove("disabled");
 
               tetrisButton.classList.remove("disabled");
               hatchButton.classList.remove("disabled");
@@ -768,7 +773,7 @@
             })
           } 
         
-          var labeled_names = ['PARTICLES', 'ANTS', 'LIGHTS', 'MAGNETS', 'WATER PLUG', 'ICE', 'SNAKE', 'DISEASE', 'SPACE INVADERS', 'SOKOBAN', 'GROW', 'MARIO', 'SAND', 'GRAVITY', 'GRAVITY II', 'GRAVITY III', 'GRAVITY IV', 'EGG', 'WIND', 'PAINT', 'CHASE', 'COINS', 'COUNT I', 'COUNT II', 'COUNT III', 'COUNT IV', 'COUNT V', 'ICE RINK', 'DOUBLE COUNT I', 'DOUBLE COUNT II', 'JUMP', 'BULLETS', 'LEVELS', 'FORAGING', 'SPIDER', 'RIVER I', 'RIVER II'];
+          var labeled_names = ['PARTICLES', 'ANTS', 'LIGHTS', 'MAGNETS', 'WATER PLUG', 'ICE', 'SNAKE', 'DISEASE', 'SPACE INVADERS', 'SOKOBAN', 'GROW', 'MARIO', 'SAND', 'GRAVITY', 'GRAVITY II', 'GRAVITY III', 'GRAVITY IV', 'EGG', 'WIND', 'PAINT', 'CHASE', 'COINS', 'COUNT I', 'COUNT II', 'COUNT III', 'COUNT IV', 'COUNT V', 'ICE RINK', 'DOUBLE COUNT I', 'DOUBLE COUNT II', 'JUMP', 'BULLETS', 'LEVELS', 'FORAGING', 'SPIDER', 'RIVER I', 'RIVER II', 'PONG'];
           var numbered_names = [...Array(document.getElementsByClassName("example-button").length).keys()].map(x => (x + 1).toString());
           index = 0;
           Array.from(document.getElementsByClassName("example-button")).forEach(function (button) {
@@ -1595,6 +1600,8 @@
   (on (== (.. (.. snake2 head) color) "red") (= snake2 (Snake (Cell (.. (.. (prev snake2) head) position) "red") (.. (prev snake2) tail) (.. (prev snake2) direction) (.. (prev snake2) origin))))
 )`);
       }
+
+
     
       function magnets2Click() {
         model_name = "magnets_ii";
@@ -1698,6 +1705,66 @@
   (on down (= mobileKey (moveNoCollision (prev mobileKey) 0 1)))
   (on (& (== (.. mobileKey origin) (Position 1 7)) (!= (.. movingWall origin) (Position 4 7))) (= movingWall (move (prev movingWall) 1 0)))
   (on (& (!= (.. mobileKey origin) (Position 1 7)) (== (.. movingWall origin) (Position 4 7))) (= movingWall (move (prev movingWall) -1 0)))
+
+)`);
+      }
+
+      function pongClick() { 
+        model_name = "pong";
+        myCodeMirror.setValue(`(program
+  (= GRID_SIZE 50)
+  (= background "black")
+  
+  (object Paddle (: color String) (map (--> pos (Cell pos color)) (rect (Position 0 -5) (Position 1 5))))
+  (object Ball (map (--> pos (Cell pos "red")) (rect (Position -1 -1) (Position 1 1))))
+  
+  (: paddle1 Paddle)
+  (= paddle1 (initnext (Paddle "yellow" (Position 0 25)) (prev paddle1)))
+  
+  (: paddle2 Paddle)
+  (= paddle2 (initnext (Paddle "orange" (Position 48 25)) (prev paddle2)))
+  
+  (: ball Ball)
+  (= ball (initnext (Ball (uniformChoice (rect (Position 20 20) (Position 30 30)))) (prev ball) ))
+  
+  (: ballDir Position)
+  (= ballDir (initnext 
+               (uniformChoice (filter (--> pos (& (!= (.. pos x) 0) (!= (.. pos y) 0))) (rect (Position -1 -1) (Position 1 1)))) 
+               (prev ballDir)))
+  
+  (on up (= paddle2 (move (prev paddle2) 0 -5)))
+  (on down (= paddle2 (move (prev paddle2) 0 5)))
+
+  (on up2 (= paddle1 (move (prev paddle1) 0 -5)))
+  (on down2 (= paddle1 (move (prev paddle1) 0 5)))
+  
+  (%% boundary handling)
+  (on (== (.. (.. ball origin) x) 1) (= ballDir (Position (- 0 (.. ballDir x)) (.. ballDir y))))
+  (on (== (.. (.. ball origin) y) 1) (= ballDir (Position (.. ballDir x) (- 0 (.. ballDir y)))))
+
+  (on (== (.. (.. ball origin) x) (- GRID_SIZE 2)) (= ballDir (Position (- 0 (.. ballDir x)) (.. ballDir y))))
+  (on (== (.. (.. ball origin) y) (- GRID_SIZE 2)) (= ballDir (Position (.. ballDir x) (- 0 (.. ballDir y)))))
+
+  (%% paddle collision handling)
+  (on (& (== (.. (.. (prev paddle1) origin) y) (.. (.. (prev ball) origin) y)) (intersects (move (prev ball) (prev ballDir)) (prev paddle1)))
+      (= ballDir (Position 2 0)))
+
+  (on (& (> (.. (.. (prev paddle1) origin) y) (.. (.. (prev ball) origin) y)) (intersects (move (prev ball) (prev ballDir)) (prev paddle1)))
+      (= ballDir (Position 1 -1)))
+
+  (on (& (< (.. (.. (prev paddle1) origin) y) (.. (.. (prev ball) origin) y)) (intersects (move (prev ball) (prev ballDir)) (prev paddle1)))
+      (= ballDir (Position 1 1)))
+
+  (on (& (== (.. (.. (prev paddle2) origin) y) (.. (.. (prev ball) origin) y)) (intersects (move (prev ball) (prev ballDir)) (prev paddle2)))
+      (= ballDir (Position -2 0)))
+
+  (on (& (> (.. (.. (prev paddle2) origin) y) (.. (.. (prev ball) origin) y)) (intersects (move (prev ball) (prev ballDir)) (prev paddle2)))
+      (= ballDir (Position -1 -1)))
+
+  (on (& (< (.. (.. (prev paddle2) origin) y) (.. (.. (prev ball) origin) y)) (intersects (move (prev ball) (prev ballDir)) (prev paddle2)))
+      (= ballDir (Position -1 1)))
+
+  (on true (= ball (move (prev ball) ballDir)))
 
 )`);
       }
