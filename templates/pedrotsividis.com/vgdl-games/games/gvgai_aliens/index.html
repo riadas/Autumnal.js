@@ -853,7 +853,7 @@
 
             } else {
 
-              if (window.innerHeight < 800) {
+              if (window.innerHeight < 900) {
                 cell_size = 25;
               } else {
                 cell_size = 35;
@@ -913,7 +913,7 @@
 
                   // cell_size = 25;
 
-                  if (window.innerHeight < 800) {
+                  if (window.innerHeight < 900) {
                     cell_size = 25;
                   } else {
                     cell_size = 35;
@@ -1051,7 +1051,7 @@
     
           window.addEventListener("resize", (event) => { 
 
-            if (window.innerHeight < 800) {
+            if (window.innerHeight < 900) {
               cell_size = 25;
             } else {
               cell_size = 35;
@@ -3807,7 +3807,7 @@ function river2Click() {
           div2.style.width = "100%";
         }
 
-        if (window.innerHeight < 800) {
+        if (window.innerHeight < 900) {
           cell_size = 25;
         } else {
           cell_size = 35;
@@ -5624,7 +5624,8 @@ function interpret(aex, env) {
     } else if (aex in env.current_var_values) {
       return [env.current_var_values[aex], env]
     } else {
-      throw new Error(`Could not interpret ${x}`);
+      console.log(aex);
+      throw new Error(`Could not interpret ${aex}`);
     }
   } else {
     if (aex != null && typeof(aex) == "object") {
