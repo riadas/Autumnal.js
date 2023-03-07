@@ -346,6 +346,282 @@
         // const host = "https://840a-129-236-162-16.ngrok.io"
         // const host = "http://9a3e0fec8d4c.ngrok.io";
         document.addEventListener("DOMContentLoaded", function() {
+
+          // /* BEGIN GAMEPAD ------------------------------------------------------------------------------------------------------------------ */
+
+          // /*
+          // * Gamepad API Test
+          // * Written in 2013 by Ted Mielczarek <ted@mielczarek.org>
+          // *
+          // * To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
+          // *
+          // * You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+          // */
+          // var haveEvents = 'GamepadEvent' in window;
+          // var haveWebkitEvents = 'WebKitGamepadEvent' in window;
+          // var controllers = {};
+          // var rAF = window.mozRequestAnimationFrame ||
+          //   window.webkitRequestAnimationFrame ||
+          //   window.requestAnimationFrame;
+
+          // function connecthandler(e) {
+          //   console.log("connecthandler");
+          //   addgamepad(e.gamepad);
+          // }
+          // function addgamepad(gamepad) {
+          //   console.log("addgamepad");
+          //   controllers[gamepad.index] = gamepad; var d = document.createElement("div");
+          //   d.setAttribute("id", "controller" + gamepad.index);
+          //   var t = document.createElement("h1");
+          //   t.appendChild(document.createTextNode("gamepad: " + gamepad.id));
+          //   d.appendChild(t);
+          //   var b = document.createElement("div");
+          //   b.className = "buttons";
+          //   for (var i=0; i<gamepad.buttons.length; i++) {
+          //     var e = document.createElement("span");
+          //     e.className = "button";
+          //     //e.id = "b" + i;
+          //     e.innerHTML = i;
+          //     b.appendChild(e);
+          //   }
+          //   d.appendChild(b);
+          //   var a = document.createElement("div");
+          //   a.className = "axes";
+          //   for (i=0; i<gamepad.axes.length; i++) {
+          //     e = document.createElement("meter");
+          //     e.className = "axis";
+          //     //e.id = "a" + i;
+          //     e.setAttribute("min", "-1");
+          //     e.setAttribute("max", "1");
+          //     e.setAttribute("value", "0");
+          //     e.innerHTML = i;
+          //     a.appendChild(e);
+          //   }
+          //   d.appendChild(a);
+          //   // document.getElementById("start").style.display = "none";
+          //   // document.body.appendChild(d);
+          //   rAF(updateStatus);
+
+          //   // setInterval(updateStatus, 1000);
+          // }
+
+          // function disconnecthandler(e) {
+          //   console.log("disconnecthandler");
+          //   removegamepad(e.gamepad);
+          // }
+
+          // function removegamepad(gamepad) {
+          //   console.log("removegamepad");
+          //   // var d = document.getElementById("controller" + gamepad.index);
+          //   // document.body.removeChild(d);
+          //   delete controllers[gamepad.index];
+          // }
+
+          // function updateStatus() {
+          //   console.log("updateStatus");
+          //   // scangamepads();
+          //   for (j in controllers) {
+          //     // console.log(j);
+          //     var controller = controllers[j];
+          //     for (var i=0; i<controller.buttons.length; i++) {
+          //       var val = controller.buttons[i];
+          //       // console.log(val);
+          //       var pressed = val.pressed == 1.0;
+          //       var touched = false;
+
+          //       // console.log("button");
+          //       // console.log(i);
+          //       // console.log("pressed");
+          //       // console.log(pressed);
+
+          //       if (pressed) {
+          //         console.log("button");
+          //         console.log(i);
+          //         console.log("val");
+          //         console.log(val);
+          //         console.log("pressed!")
+          //       }
+
+          //       if (typeof(val) == "object") {
+          //         pressed = val.pressed;
+          //         if ('touched' in val) {
+          //           touched = val.touched;
+          //         }
+          //         val = val.value;
+          //       }
+          //       var pct = Math.round(val * 100) + "%";
+          //     }
+          //   }
+          //   rAF(updateStatus);
+          // }
+
+          // function scangamepads() {
+          //   console.log("scangamepads");
+          //   var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+          //   for (var i = 0; i < gamepads.length; i++) {
+          //     if (gamepads[i] && (gamepads[i].index in controllers)) {
+          //       controllers[gamepads[i].index] = gamepads[i];
+          //     }
+          //   }
+          // }
+
+          // if (haveEvents) {
+          //   window.addEventListener("gamepadconnected", connecthandler);
+          //   window.addEventListener("gamepaddisconnected", disconnecthandler);
+          // } else if (haveWebkitEvents) {
+          //   window.addEventListener("webkitgamepadconnected", connecthandler);
+          //   window.addEventListener("webkitgamepaddisconnected", disconnecthandler);
+          // } else {
+          //   setInterval(scangamepads, 500);
+          // }
+
+          // /* END GAMEPAD -------------------------------------------------------------------------------------------------------------------- */
+
+/*
+ * Gamepad API Test
+ * Written in 2013 by Ted Mielczarek <ted@mielczarek.org>
+ *
+ * To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
+ *
+ * You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+ */
+ var haveEvents = 'GamepadEvent' in window;
+var haveWebkitEvents = 'WebKitGamepadEvent' in window;
+var controllers = {};
+var rAF = window.mozRequestAnimationFrame ||
+  window.webkitRequestAnimationFrame ||
+  window.requestAnimationFrame;
+
+function connecthandler(e) {
+  console.log("connectHandler");
+  addgamepad(e.gamepad);
+}
+function addgamepad(gamepad) {
+  console.log("addgamepad");
+  controllers[gamepad.index] = gamepad; var d = document.createElement("div");
+  d.setAttribute("id", "controller" + gamepad.index);
+  var t = document.createElement("h1");
+  t.appendChild(document.createTextNode("gamepad: " + gamepad.id));
+  d.appendChild(t);
+  var b = document.createElement("div");
+  b.className = "buttons";
+  for (var i=0; i<gamepad.buttons.length; i++) {
+    var e = document.createElement("span");
+    e.className = "button";
+    //e.id = "b" + i;
+    e.innerHTML = i;
+    b.appendChild(e);
+  }
+  d.appendChild(b);
+  var a = document.createElement("div");
+  a.className = "axes";
+  for (i=0; i<gamepad.axes.length; i++) {
+    e = document.createElement("meter");
+    e.className = "axis";
+    //e.id = "a" + i;
+    e.setAttribute("min", "-1");
+    e.setAttribute("max", "1");
+    e.setAttribute("value", "0");
+    e.innerHTML = i;
+    a.appendChild(e);
+  }
+  d.appendChild(a);
+  // document.getElementById("start").style.display = "none";
+  document.body.appendChild(d);
+  rAF(updateStatus);
+}
+
+function disconnecthandler(e) {
+  console.log("disconnecthandler");
+  removegamepad(e.gamepad);
+}
+
+function removegamepad(gamepad) {
+  console.log("removehandler");
+
+  // var d = document.getElementById("controller" + gamepad.index);
+  document.body.removeChild(d);
+  delete controllers[gamepad.index];
+}
+
+function updateStatus() {
+  // console.log("updateStatus");
+
+  scangamepads();
+  for (j in controllers) {
+    console.log(j);
+    var controller = controllers[j];
+    // var d = document.getElementById("controller" + j);
+    // var buttons = d.getElementsByClassName("button");
+    for (var i=0; i<controller.buttons.length; i++) {
+      // var b = buttons[i];
+      var val = controller.buttons[i];
+      // console.log(val);
+      var pressed = val == 1.0;
+      var touched = false;
+      if (typeof(val) == "object") {
+        pressed = val.pressed;
+        if ('touched' in val) {
+          touched = val.touched;
+        }
+        val = val.value;
+      }
+
+      if (pressed) {
+        console.log("pressed!");
+        console.log(i);
+        if (i == 12) {
+          document.dispatchEvent(new KeyboardEvent('keyup',{'key':'w'}));
+        } else if (i == 13) {
+          document.dispatchEvent(new KeyboardEvent('keyup',{'key':'s'}));
+        } else if (i == 14) {
+          document.dispatchEvent(new KeyboardEvent('keyup',{'key':'a'}));
+        } else if (i == 15) {
+          document.dispatchEvent(new KeyboardEvent('keyup',{'key':'d'}));
+        }
+      }
+
+      var pct = Math.round(val * 100) + "%";
+      // b.style.backgroundSize = pct + " " + pct;
+      // b.className = "button";
+      // if (pressed) {
+      //   b.className += " pressed";
+      // }
+      // if (touched) {
+      //   b.className += " touched";
+      // }
+    }
+
+    // var axes = d.getElementsByClassName("axis");
+    // for (var i=0; i<controller.axes.length; i++) {
+    //   var a = axes[i];
+    //   a.innerHTML = i + ": " + controller.axes[i].toFixed(4);
+    //   a.setAttribute("value", controller.axes[i]);
+    // }
+  }
+  rAF(updateStatus);
+}
+
+function scangamepads() {
+  var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+  for (var i = 0; i < gamepads.length; i++) {
+    if (gamepads[i] && (gamepads[i].index in controllers)) {
+      controllers[gamepads[i].index] = gamepads[i];
+    }
+  }
+}
+
+if (haveEvents) {
+  window.addEventListener("gamepadconnected", connecthandler);
+  window.addEventListener("gamepaddisconnected", disconnecthandler);
+} else if (haveWebkitEvents) {
+  window.addEventListener("webkitgamepadconnected", connecthandler);
+  window.addEventListener("webkitgamepaddisconnected", disconnecthandler);
+} else {
+  setInterval(scangamepads, 500);
+}
+
+
           // global frontend variables
           var not_run_yet = true;
           var intervalID = -1;
