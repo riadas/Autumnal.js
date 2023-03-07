@@ -528,7 +528,7 @@ function addgamepad(gamepad) {
   d.appendChild(a);
   // document.getElementById("start").style.display = "none";
   document.body.appendChild(d);
-  rAF(updateStatus);
+  setInterval(updateStatus, 50);
 }
 
 function disconnecthandler(e) {
@@ -599,7 +599,7 @@ function updateStatus() {
     //   a.setAttribute("value", controller.axes[i]);
     // }
   }
-  rAF(updateStatus);
+  // rAF(updateStatus);
 }
 
 function scangamepads() {
