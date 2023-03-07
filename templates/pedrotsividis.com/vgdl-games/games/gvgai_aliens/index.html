@@ -544,6 +544,14 @@ function removegamepad(gamepad) {
   delete controllers[gamepad.index];
 }
 
+var justPressed = false;
+var justPressedID = 0;
+
+function justPressedHandler() {
+  clearInterval(justPressedID);
+  justPressed = false; 
+}
+
 function updateStatus() {
   // console.log("updateStatus");
 
@@ -570,14 +578,31 @@ function updateStatus() {
       if (pressed) {
         console.log("pressed!");
         console.log(i);
-        if (i == 12) {
-          document.dispatchEvent(new KeyboardEvent('keyup',{'key':'w'}));
-        } else if (i == 13) {
-          document.dispatchEvent(new KeyboardEvent('keyup',{'key':'s'}));
-        } else if (i == 14) {
-          document.dispatchEvent(new KeyboardEvent('keyup',{'key':'a'}));
-        } else if (i == 15) {
-          document.dispatchEvent(new KeyboardEvent('keyup',{'key':'d'}));
+        if (!justPressed) {
+          justPressed = true;
+          justPressedID = setInterval(justPressedHandler, 200);
+          if (j == 0) {
+            if (i == 12) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'w'}));
+            } else if (i == 13) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'s'}));
+            } else if (i == 14) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'a'}));
+            } else if (i == 15) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'d'}));
+            }
+          } else {
+            if (i == 12) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'KeyUp'}));
+            } else if (i == 13) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'KeyDown'}));
+            } else if (i == 14) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'KeyLeft'}));
+            } else if (i == 15) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'KeyRight'}));
+            }
+          }
+
         }
       }
 
