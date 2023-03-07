@@ -257,7 +257,7 @@
             <button id="ice-button" class="control-button example-button">ICE</button>
             <button id="tetris-button" style="display: none" class="control-button">TETRIS</button>
             <button id="hatch-button" style="display: none" class="control-button">HATCH</button>
-            <button id="snake-button" style="display: none" class="control-button">SNAKE</button>
+            <button id="snake-button" class="control-button example-button">SNAKE</button>
             <button id="magnets-button-2" style="display: none" class="control-button">MAGNETS II</button>
             <button id="magnets-button-3" style="display: none" class="control-button">MAGNETS III</button>
             <button id="lock-button" style="display: none" class="control-button">LOCK</button>
@@ -768,7 +768,7 @@
             })
           } 
         
-          var labeled_names = ['PARTICLES', 'ANTS', 'LIGHTS', 'MAGNETS', 'WATER PLUG', 'ICE', 'DISEASE', 'SPACE INVADERS', 'SOKOBAN', 'GROW', 'MARIO', 'SAND', 'GRAVITY', 'GRAVITY II', 'GRAVITY III', 'GRAVITY IV', 'EGG', 'WIND', 'PAINT', 'CHASE', 'COINS', 'COUNT I', 'COUNT II', 'COUNT III', 'COUNT IV', 'COUNT V', 'ICE RINK', 'DOUBLE COUNT I', 'DOUBLE COUNT II', 'JUMP', 'BULLETS', 'LEVELS', 'FORAGING', 'SPIDER', 'RIVER I', 'RIVER II'];
+          var labeled_names = ['PARTICLES', 'ANTS', 'LIGHTS', 'MAGNETS', 'WATER PLUG', 'ICE', 'SNAKE', 'DISEASE', 'SPACE INVADERS', 'SOKOBAN', 'GROW', 'MARIO', 'SAND', 'GRAVITY', 'GRAVITY II', 'GRAVITY III', 'GRAVITY IV', 'EGG', 'WIND', 'PAINT', 'CHASE', 'COINS', 'COUNT I', 'COUNT II', 'COUNT III', 'COUNT IV', 'COUNT V', 'ICE RINK', 'DOUBLE COUNT I', 'DOUBLE COUNT II', 'JUMP', 'BULLETS', 'LEVELS', 'FORAGING', 'SPIDER', 'RIVER I', 'RIVER II'];
           var numbered_names = [...Array(document.getElementsByClassName("example-button").length).keys()].map(x => (x + 1).toString());
           index = 0;
           Array.from(document.getElementsByClassName("example-button")).forEach(function (button) {
@@ -1551,35 +1551,48 @@
         myCodeMirror.setValue(`(program
   (= GRID_SIZE 16)
   
-  (object Snake (: head Cell) (: tail (List Cell)) (: direction Position) (list head tail))
+  (object Snake (: head Cell) (: tail (List Cell)) (: direction Position) (vcat head tail))
   (object Food (Cell 0 0 "pink"))
   
   (: snake Snake)
   (= snake (initnext (Snake (Cell 7 7 "green") (list (Cell 8 7 "green")) (Position -1 0) (Position 0 0)) 
                       (nextSnake (prev snake) (prev food))))
+
+  (: snake2 Snake)
+  (= snake2 (initnext (Snake (Cell 10 10 "blue") (list (Cell 11 10 "blue")) (Position -1 0) (Position 0 0)) 
+                      (nextSnake (prev snake2) (prev food))))  
   
   (: food Food)
   (= food (initnext (Food (Position 10 8)) (nextFood food)))
   
   (= nextSnake (fn (snake food) (let (
-                                      (= new_snake (Snake (Cell (moveWrap (.. snake head) (.. snake direction)) "green") (vcat (.. snake head) (.. snake tail)) (.. snake direction) (.. snake origin)))
+                                      (= new_snake (Snake (Cell (moveWrap (.. snake head) (.. snake direction)) (.. (.. snake head) color)) (vcat (.. snake head) (.. snake tail)) (.. snake direction) (.. snake origin)))
                     (if (in (.. new_snake head) (.. new_snake tail)) 
                                         then (Snake (Cell (.. (.. snake head) position) "red") (.. snake tail) (.. snake direction) (.. snake origin)) 
-                                        else (if (! (isFree (.. food origin) food)) 
+                                        else (if (intersects (prev food) (if (== (.. (.. snake head) color) "green") then (prev snake) else (prev snake2))) 
                                               then new_snake 
                                               else (updateObj new_snake "tail" (filter 
-                                                                                (--> cell (!= (.. cell position) (.. (last (.. new_snake tail)) position))) 
+                                            (--> cell (!= (.. cell position) (.. (last (.. new_snake tail)) position))) 
                                             (.. new_snake tail)))))
                                       ))))
   
-  (= nextFood (fn (food) (if (isFree (.. food origin) food) 
+  (= nextFood (fn (food) (if (! (intersects (prev food) (list (prev snake2) (prev snake))) )
                           then food 
-                          else (Food (uniformChoice (filter isFree (allPositions)))) )))
+                          else (Food (uniformChoice (filter isFree (allPositions GRID_SIZE)))) )))
+
+
+  (on left (= snake (if (== (.. (.. (prev snake) head) color) "red") then (prev snake) else (updateObj (prev snake) "direction" (Position -1 0)))))
+  (on right (= snake (if (== (.. (.. (prev snake) head) color) "red") then (prev snake) else (updateObj (prev snake) "direction" (Position 1 0)))))
+  (on up (= snake (if (== (.. (.. (prev snake) head) color) "red") then (prev snake) else (updateObj (prev snake) "direction" (Position 0 -1)))))
+  (on down (= snake (if (== (.. (.. (prev snake) head) color) "red") then (prev snake) else (updateObj (prev snake) "direction" (Position 0 1)))))
+
+  (on left2 (= snake2 (if (== (.. (.. (prev snake2) head) color) "red") then (prev snake2) else (updateObj (prev snake2) "direction" (Position -1 0)))))
+  (on right2 (= snake2 (if (== (.. (.. (prev snake2) head) color) "red") then (prev snake2) else (updateObj (prev snake2) "direction" (Position 1 0)))))
+  (on up2 (= snake2 (if (== (.. (.. (prev snake2) head) color) "red") then (prev snake2) else (updateObj (prev snake2) "direction" (Position 0 -1)))))
+  (on down2 (= snake2 (if (== (.. (.. (prev snake2) head) color) "red") then (prev snake2) else (updateObj (prev snake2) "direction" (Position 0 1)))))
   
-  (on left (= snake (if (== (.. (.. snake head) color) "red") then snake else (updateObj (prev snake) "direction" (Position -1 0)))))
-  (on right (= snake (if (== (.. (.. snake head) color) "red") then snake else (updateObj (prev snake) "direction" (Position 1 0)))))
-  (on up (= snake (if (== (.. (.. snake head) color) "red") then snake else (updateObj (prev snake) "direction" (Position 0 -1)))))
-  (on down (= snake (if (== (.. (.. snake head) color) "red") then snake else (updateObj (prev snake) "direction" (Position 0 1)))))
+  (on (== (.. (.. snake head) color) "red") (= snake (Snake (Cell (.. (.. (prev snake) head) position) "red") (.. (prev snake) tail) (.. (prev snake) direction) (.. (prev snake) origin))))
+  (on (== (.. (.. snake2 head) color) "red") (= snake2 (Snake (Cell (.. (.. (prev snake2) head) position) "red") (.. (prev snake2) tail) (.. (prev snake2) direction) (.. (prev snake2) origin))))
 )`);
       }
     
@@ -4854,9 +4867,39 @@ function moveDownNoCollision(args, state=null) {
   return (isWithinBounds([move([object, 0, 1])], state) && isFree([move([object, 0, 1]), object], state)) ? move([object, 0, 1]) : object;
 }
 
-// function moveWrap(args, state=null) {
-
-// }
+function moveWrap(args, state=null) {
+  if (args.length == 3) {
+    if (args[0].id != undefined) { // object, x, y
+      var [object, x, y] = args; 
+      object = JSON.parse(JSON.stringify(object));
+      object.origin = moveWrap([object.origin, x, y], state);
+      return object;
+    } else { // position, x, y
+      var [position, x, y] = args;
+      var GRID_SIZE = state.histories.GRID_SIZE[(state.time - 1).toString()];
+      if (Array.isArray(GRID_SIZE)) {
+        var [GRID_SIZE_X, GRID_SIZE_Y] = GRID_SIZE;
+        return Position([(position.x + x + GRID_SIZE_X) % GRID_SIZE_X, (position.y + y + GRID_SIZE_Y) % GRID_SIZE_Y]);
+      } else {
+        var [GRID_SIZE_X, GRID_SIZE_Y] = [GRID_SIZE, GRID_SIZE];
+        return Position([(position.x + x + GRID_SIZE) % GRID_SIZE, (position.y + y + GRID_SIZE) % GRID_SIZE])
+      }    
+    }
+  } else {
+    var [a, b] = args;
+    if (a.id != undefined) { // object, position
+      var object = JSON.parse(JSON.stringify(a));
+      object.origin = moveWrap([object.origin, b.x, b.y], state);
+      return object;
+    } else if (a.color != undefined) { // cell, position
+      return moveWrap([a.position, b.x, b.y], state);
+    } else if (b.color != undefined) { // position, cell
+      return moveWrap([b.position, a], state);
+    } else { // position, position
+      return moveWrap([a, b.x, b.y], state);
+    }
+  }
+}
 
 // function moveLeftWrap(args, state=null) {
 
@@ -5384,6 +5427,7 @@ var lib_to_func = {"ObjectType" : ObjectType,
                    "adj" : adj,
                    "intersect" : intersect,
                    "move" : move,
+                   "moveWrap" : moveWrap,
                    "moveNoCollision" : moveNoCollision,
                    "moveLeftNoCollision" : moveLeftNoCollision,
                    "moveRightNoCollision" : moveRightNoCollision,
