@@ -1336,28 +1336,52 @@ if (haveEvents) {
             if (!history_mode && (intervalID != -1)) {
               switch (event.key) {
                 case "ArrowLeft":
-                  user_event = {"left" : true, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false}
+                  user_event = {"left" : true, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
                   break;
                 case "ArrowRight":
-                  user_event = {"left" : false, "right" : true, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false}
+                  user_event = {"left" : false, "right" : true, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
                   break;
                 case "ArrowUp":
-                user_event = {"left" : false, "right" : false, "up" : true, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false}
+                user_event = {"left" : false, "right" : false, "up" : true, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
                   break;
                 case "ArrowDown":
-                  user_event = {"left" : false, "right" : false, "up" : false, "down" : true, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false}
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : true, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
                   break;                  
                 case "a":
-                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : true, "right2" : false, "up2" : false, "down2" : false}
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : true, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
                   break;
                 case "d":
-                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : true, "up2" : false, "down2" : false}
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : true, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
                   break;
                 case "w":
-                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : true, "down2" : false}
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : true, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
                   break;
                 case "s":
-                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : true}
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : true, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  break;
+                case "f":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : true, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  break;
+                case "h":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : true, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  break;
+                case "t":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : true, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  break;
+                case "g":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : true, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  break;
+                case "j":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : true, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  break;
+                case "l":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : true, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  break;
+                case "i":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : true, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  break;
+                case "k":
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : true, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
                   break;
               }
 
@@ -5350,6 +5374,42 @@ function distance(args, state=null) {
   }
 }
 
+function cartDistance(args, state=null) {
+  if (!Array.isArray(args[0]) && !Array.isArray(args[1])) {
+    if (args[0].id == undefined && args[1].id == undefined) { // position, position
+      var [position1, position2] = args;
+      return Math.sqrt(Math.abs(position1.x - position2.x)*Math.abs(position1.x - position2.x) + Math.abs(position1.y - position2.y)*Math.abs(position1.y - position2.y));
+    } else if (args[0].id != undefined && args[1].id != undefined) { // object, object
+      var [object1, object2] = args;
+      var position1 = object1.origin;
+      var position2 = object2.origin;
+      return cartDistance([position1, position2]);      
+    } else if (args[0].id != undefined) { // object, position
+      var [object, position] = args;
+      return cartDistance([object.origin, position]);
+    } else { // position, object
+      var [position, object] = args;
+      return cartDistance([object.origin, position]);
+    }
+  } else if (!Array.isArray(args[0])) { // second arg is array (obj, arr obj)
+    var [object, objects] = args;
+    if (objects.length == 0) {
+      return Number.MAX_SAFE_INTEGER;
+    } else {
+      var distances = objects.map(obj => cartDistance([object, obj]));
+      return Math.min(...distances);
+    }
+  } else { // both args are arrays (arr obj, arr obj)
+    var [objects1, objects2] = args;
+    if (objects1.length == 0 && objects2.length == 0) {
+      return Number.MAX_SAFE_INTEGER;
+    } else {
+      var distances = unfold([objects1.map(obj => cartDistance([obj, objects2]))]);
+      return Math.min(...distances);
+    }
+  }
+}
+
 // function firstWithDefault(args, state=null) {
 
 // }
@@ -5740,7 +5800,7 @@ function isobject(aex) {
 var prim_to_func = {"+" : function(x, y) {return x + y;},
                    "-" : function(x, y) {return x - y;},
                    "*" : function(x, y) {return x * y;},
-                   "/" : function(x, y) {return x / y;},
+                   "/" : function(x, y) {return Math.floor(x / y);},
                    "&" : function(x, y) {return x && y;},
                    "!" : function(x) {return !x;},
                    "|" : function(x, y) {return x || y;},
@@ -5750,7 +5810,9 @@ var prim_to_func = {"+" : function(x, y) {return x + y;},
                    ">=" : function(x, y) {return x >= y;}, 
                    "==" : function(x, y) {return x == y;},
                    "%" : function(x, y) {return x % y;},
-                   "!=" : function(x, y) {return x != y},  
+                   "!=" : function(x, y) {return x != y;},
+                   "sqrt" : function(x) {return Math.floor(Math.sqrt(x));},
+                   "abs" : function(x) {return Math.abs(x);},
                   }
 
 function isprim(f) {
@@ -5818,6 +5880,7 @@ var lib_to_func = {"ObjectType" : ObjectType,
                    "moveDownNoCollision" : moveDownNoCollision,
                    "randomPositions" : randomPositions,
                    "distance" : distance,
+                   "cartDistance" : cartDistance,
                    "closest" : closest,
                    "mapPositions" : mapPositions,
                    "nextLiquid" : nextLiquid,
@@ -6040,6 +6103,25 @@ function interpret(aex, env) {
       return [env.up2, env];
     } else if (aex == "down2") {
       return [env.down2, env];
+
+    } else if (aex == "left3") {
+      return [env.left3, env];
+    } else if (aex == "right3") { 
+      return [env.right3, env];
+    } else if (aex == "up3") {
+      return [env.up3, env];
+    } else if (aex == "down3") {
+      return [env.down3, env];
+
+    } else if (aex == "left4") {
+      return [env.left4, env];
+    } else if (aex == "right4") { 
+      return [env.right4, env];
+    } else if (aex == "up4") {
+      return [env.up4, env];
+    } else if (aex == "down4") {
+      return [env.down4, env];
+
     } else if (aex == "click") {
       return [env.click, env];
     } else if (aex == "clicked") {
@@ -6489,6 +6571,17 @@ function start(aex) {
              "right2" : false, 
              "up2" : false, 
              "down2" : false,
+
+             "left3" : false, 
+             "right3" : false, 
+             "up3" : false, 
+             "down3" : false,
+
+             "left4" : false, 
+             "right4" : false, 
+             "up4" : false, 
+             "down4" : false,
+
              "click" : null, 
              "current_var_values" : {},
              "lifted" : {},
@@ -6569,7 +6662,7 @@ function step(aex, env, user_events=null) {
 
 function update_state(env_) {
   // reset user events 
-  for (let user_event of ["left", "right", "up", "down", "left2", "right2", "up2", "down2"]) {
+  for (let user_event of ["left", "right", "up", "down", "left2", "right2", "up2", "down2", "left3", "right3", "up3", "down3", "left4", "right4", "up4", "down4"]) {
     env_[user_event] = false;
   }
   env_["click"] = null;
