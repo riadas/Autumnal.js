@@ -544,13 +544,7 @@ function removegamepad(gamepad) {
   delete controllers[gamepad.index];
 }
 
-var justPressed = false;
-var justPressedID = 0;
-
-function justPressedHandler() {
-  clearInterval(justPressedID);
-  justPressed = false; 
-}
+var prev_pressed = {};
 
 function updateStatus() {
   // console.log("updateStatus");
@@ -575,12 +569,11 @@ function updateStatus() {
         val = val.value;
       }
 
-      if (pressed) {
-        console.log("pressed!");
-        console.log(i);
-        if (!justPressed) {
-          justPressed = true;
-          justPressedID = setInterval(justPressedHandler, 200);
+      if (!prev_pressed.hasOwnProperty(j)) {
+        prev_pressed[j] = {}
+        prev_pressed[j][i] = pressed;
+      } else {
+        if (!pressed && prev_pressed[j][i]) {
           if (j == 0) {
             if (i == 12) {
               document.dispatchEvent(new KeyboardEvent('keyup',{'key':'w'}));
@@ -591,7 +584,7 @@ function updateStatus() {
             } else if (i == 15) {
               document.dispatchEvent(new KeyboardEvent('keyup',{'key':'d'}));
             }
-          } else {
+          } else if (j == 1) {
             if (i == 12) {
               document.dispatchEvent(new KeyboardEvent('keyup',{'key':'KeyUp'}));
             } else if (i == 13) {
@@ -601,10 +594,32 @@ function updateStatus() {
             } else if (i == 15) {
               document.dispatchEvent(new KeyboardEvent('keyup',{'key':'KeyRight'}));
             }
+          } else if (j == 2) {
+            if (i == 12) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'t'}));
+            } else if (i == 13) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'f'}));
+            } else if (i == 14) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'g'}));
+            } else if (i == 15) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'h'}));
+            }
+          } else if (j == 3) {
+            if (i == 12) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'i'}));
+            } else if (i == 13) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'j'}));
+            } else if (i == 14) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'k'}));
+            } else if (i == 15) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'l'}));
+            }
           }
-
-        }
+        } 
+        // update prev_pressed
+        prev_pressed[j][i] = pressed;
       }
+
 
       var pct = Math.round(val * 100) + "%";
       // b.style.backgroundSize = pct + " " + pct;
