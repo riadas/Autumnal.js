@@ -258,6 +258,7 @@
             <button id="tetris-button" style="display: none" class="control-button">TETRIS</button>
             <button id="hatch-button" style="display: none" class="control-button">HATCH</button>
             <button id="snake-button" class="control-button example-button">SNAKE</button>
+            <button id="snake4-button" class="control-button example-button">SNAKE 4</button>
             <button id="magnets-button-2" style="display: none" class="control-button">MAGNETS II</button>
             <button id="magnets-button-3" style="display: none" class="control-button">MAGNETS III</button>
             <button id="lock-button" style="display: none" class="control-button">LOCK</button>
@@ -528,7 +529,8 @@ function addgamepad(gamepad) {
   d.appendChild(a);
   // document.getElementById("start").style.display = "none";
   document.body.appendChild(d);
-  setInterval(updateStatus, 50);
+  rAF(updateStatus);
+  // setInterval(updateStatus, 50);
 }
 
 function disconnecthandler(e) {
@@ -551,7 +553,7 @@ function updateStatus() {
 
   scangamepads();
   for (j in controllers) {
-    console.log(j);
+    // console.log(j);
     var controller = controllers[j];
     // var d = document.getElementById("controller" + j);
     // var buttons = d.getElementsByClassName("button");
@@ -574,6 +576,7 @@ function updateStatus() {
         prev_pressed[j][i] = pressed;
       } else {
         if (!pressed && prev_pressed[j][i]) {
+          console.log("j: " + j.toString() + ", i: " + i.toString());
           if (j == 0) {
             if (i == 12) {
               document.dispatchEvent(new KeyboardEvent('keyup',{'key':'w'}));
@@ -586,21 +589,21 @@ function updateStatus() {
             }
           } else if (j == 1) {
             if (i == 12) {
-              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'KeyUp'}));
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'ArrowUp'}));
             } else if (i == 13) {
-              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'KeyDown'}));
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'ArrowDown'}));
             } else if (i == 14) {
-              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'KeyLeft'}));
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'ArrowLeft'}));
             } else if (i == 15) {
-              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'KeyRight'}));
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'ArrowRight'}));
             }
           } else if (j == 2) {
             if (i == 12) {
               document.dispatchEvent(new KeyboardEvent('keyup',{'key':'t'}));
             } else if (i == 13) {
-              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'f'}));
-            } else if (i == 14) {
               document.dispatchEvent(new KeyboardEvent('keyup',{'key':'g'}));
+            } else if (i == 14) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'f'}));
             } else if (i == 15) {
               document.dispatchEvent(new KeyboardEvent('keyup',{'key':'h'}));
             }
@@ -608,9 +611,9 @@ function updateStatus() {
             if (i == 12) {
               document.dispatchEvent(new KeyboardEvent('keyup',{'key':'i'}));
             } else if (i == 13) {
-              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'j'}));
-            } else if (i == 14) {
               document.dispatchEvent(new KeyboardEvent('keyup',{'key':'k'}));
+            } else if (i == 14) {
+              document.dispatchEvent(new KeyboardEvent('keyup',{'key':'j'}));
             } else if (i == 15) {
               document.dispatchEvent(new KeyboardEvent('keyup',{'key':'l'}));
             }
@@ -639,7 +642,7 @@ function updateStatus() {
     //   a.setAttribute("value", controller.axes[i]);
     // }
   }
-  // rAF(updateStatus);
+  rAF(updateStatus);
 }
 
 function scangamepads() {
@@ -708,6 +711,7 @@ if (haveEvents) {
           document.getElementById("ice-button").addEventListener("click", iceClick);
           document.getElementById("hatch-button").addEventListener("click", hatchClick);
           document.getElementById("snake-button").addEventListener("click", snakeClick);
+          document.getElementById("snake4-button").addEventListener("click", snake4Click);
           document.getElementById("magnets-button-2").addEventListener("click", magnets2Click);
           document.getElementById("magnets-button-3").addEventListener("click", magnets3Click);
           document.getElementById("lock-button").addEventListener("click", lockClick);
@@ -782,6 +786,7 @@ if (haveEvents) {
             tetrisButton = document.getElementById("tetris-button");
             hatchButton = document.getElementById("hatch-button");
             snakeButton = document.getElementById("snake-button");
+            snake4Button = document.getElementById("snake4-button");
             magnets2Button = document.getElementById("magnets-button-2");
             magnets3Button = document.getElementById("magnets-button-3");
             lockButton = document.getElementById("lock-button");
@@ -917,6 +922,7 @@ if (haveEvents) {
               tetrisButton.classList.add("disabled");
               hatchButton.classList.add("disabled");
               snakeButton.classList.add("disabled");
+              snake4Button.classList.add("disabled");
               randomButton.classList.add("disabled");
               randomButton2.classList.add("disabled");
               randomButton3.classList.add("disabled");
@@ -1059,6 +1065,7 @@ if (haveEvents) {
               tetrisButton.classList.remove("disabled");
               hatchButton.classList.remove("disabled");
               snakeButton.classList.remove("disabled");
+              snake4Button.classList.remove("disabled");
               plugButton.classList.remove("disabled");
               iceButton.classList.remove("disabled");
               randomButton.classList.remove("disabled");
@@ -1089,7 +1096,7 @@ if (haveEvents) {
             })
           } 
         
-          var labeled_names = ['PARTICLES', 'ANTS', 'LIGHTS', 'MAGNETS', 'WATER PLUG', 'ICE', 'SNAKE', 'DISEASE', 'SPACE INVADERS', 'SOKOBAN', 'GROW', 'MARIO', 'SAND', 'GRAVITY', 'GRAVITY II', 'GRAVITY III', 'GRAVITY IV', 'EGG', 'WIND', 'PAINT', 'CHASE', 'COINS', 'COUNT I', 'COUNT II', 'COUNT III', 'COUNT IV', 'COUNT V', 'ICE RINK', 'DOUBLE COUNT I', 'DOUBLE COUNT II', 'JUMP', 'BULLETS', 'LEVELS', 'FORAGING', 'SPIDER', 'RIVER I', 'RIVER II', 'PONG'];
+          var labeled_names = ['PARTICLES', 'ANTS', 'LIGHTS', 'MAGNETS', 'WATER PLUG', 'ICE', 'SNAKE', 'SNAKE 4', 'DISEASE', 'SPACE INVADERS', 'SOKOBAN', 'GROW', 'MARIO', 'SAND', 'GRAVITY', 'GRAVITY II', 'GRAVITY III', 'GRAVITY IV', 'EGG', 'WIND', 'PAINT', 'CHASE', 'COINS', 'COUNT I', 'COUNT II', 'COUNT III', 'COUNT IV', 'COUNT V', 'ICE RINK', 'DOUBLE COUNT I', 'DOUBLE COUNT II', 'JUMP', 'BULLETS', 'LEVELS', 'FORAGING', 'SPIDER', 'RIVER I', 'RIVER II', 'PONG'];
           var numbered_names = [...Array(document.getElementsByClassName("example-button").length).keys()].map(x => (x + 1).toString());
           index = 0;
           Array.from(document.getElementsByClassName("example-button")).forEach(function (button) {
@@ -1372,16 +1379,16 @@ if (haveEvents) {
                   user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : true, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
                   break;
                 case "j":
-                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : true, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : true, "right4" : false, "up4" : false, "down4" : false}
                   break;
                 case "l":
-                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : true, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : true, "up4" : false, "down4" : false}
                   break;
                 case "i":
-                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : true, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : true, "down4" : false}
                   break;
                 case "k":
-                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : true, "left4" : false, "right4" : false, "up4" : false, "down4" : false}
+                  user_event = {"left" : false, "right" : false, "up" : false, "down" : false, "click" : null, "left2" : false, "right2" : false, "up2" : false, "down2" : false, "left3" : false, "right3" : false, "up3" : false, "down3" : false, "left4" : false, "right4" : false, "up4" : false, "down4" : true}
                   break;
               }
 
@@ -1890,7 +1897,85 @@ if (haveEvents) {
 
 )`);
       }
-    
+
+      function snake4Click() {
+        model_name = "snake";
+        myCodeMirror.setValue(`(program
+  (= GRID_SIZE 18)
+  (= background "black")
+  
+  (object Snake (: head Cell) (: tail (List Cell)) (: direction Position) (vcat head tail))
+  (object Food (Cell 0 0 "pink"))
+  
+  (: snake Snake)
+  (= snake (initnext (Snake (Cell 7 7 "green") (list (Cell 8 7 "green")) (Position -1 0) (Position 0 0)) 
+                      (nextSnake (prev snake) (prev food))))
+
+  (: snake2 Snake)
+  (= snake2 (initnext (Snake (Cell 10 10 "blue") (list (Cell 11 10 "blue")) (Position -1 0) (Position 0 0)) 
+                      (nextSnake (prev snake2) (prev food))))  
+
+  (: snake3 Snake)
+  (= snake3 (initnext (Snake (Cell 13 13 "mediumpurple") (list (Cell 11 10 "mediumpurple")) (Position -1 0) (Position 0 0)) 
+                      (nextSnake (prev snake3) (prev food))))  
+
+  (: snake4 Snake)
+  (= snake4 (initnext (Snake (Cell 4 4 "magenta") (list (Cell 11 10 "magenta")) (Position -1 0) (Position 0 0)) 
+                      (nextSnake (prev snake4) (prev food))))    
+  
+  (: food Food)
+  (= food (initnext (Food (Position 10 8)) (nextFood food)))
+  
+  (= nextSnake (fn (snake food) (let (
+                                      (= new_snake (Snake (Cell (moveWrap (.. snake head) (.. snake direction)) (.. (.. snake head) color)) (vcat (.. snake head) (.. snake tail)) (.. snake direction) (.. snake origin)))
+                    (if (in (.. new_snake head) (.. new_snake tail)) 
+                                        then (Snake (Cell (.. (.. snake head) position) "red") (.. snake tail) (.. snake direction) (.. snake origin)) 
+                                        else (if (intersects (prev food) (if (== (.. (.. snake head) color) "green") then (prev snake) else (if (== (.. (.. snake head) color) "blue") then (prev snake2) else (if (== (.. (.. snake head) color) "mediumpurple") then (prev snake3) else (prev snake4))))) 
+                                              then new_snake 
+                                              else (updateObj new_snake "tail" (filter 
+                                            (--> cell (!= (.. cell position) (.. (last (.. new_snake tail)) position))) 
+                                            (.. new_snake tail)))))
+                                      ))))
+  
+  (= nextFood (fn (food) (if (! (intersects (prev food) (list (prev snake4) (prev snake3) (prev snake2) (prev snake))) )
+                          then food 
+                          else (Food (uniformChoice (filter isFree (allPositions GRID_SIZE)))) )))
+
+
+  (on left (= snake (if (== (.. (.. (prev snake) head) color) "red") then (prev snake) else (updateObj (prev snake) "direction" (Position -1 0)))))
+  (on right (= snake (if (== (.. (.. (prev snake) head) color) "red") then (prev snake) else (updateObj (prev snake) "direction" (Position 1 0)))))
+  (on up (= snake (if (== (.. (.. (prev snake) head) color) "red") then (prev snake) else (updateObj (prev snake) "direction" (Position 0 -1)))))
+  (on down (= snake (if (== (.. (.. (prev snake) head) color) "red") then (prev snake) else (updateObj (prev snake) "direction" (Position 0 1)))))
+
+  (on left2 (= snake2 (if (== (.. (.. (prev snake2) head) color) "red") then (prev snake2) else (updateObj (prev snake2) "direction" (Position -1 0)))))
+  (on right2 (= snake2 (if (== (.. (.. (prev snake2) head) color) "red") then (prev snake2) else (updateObj (prev snake2) "direction" (Position 1 0)))))
+  (on up2 (= snake2 (if (== (.. (.. (prev snake2) head) color) "red") then (prev snake2) else (updateObj (prev snake2) "direction" (Position 0 -1)))))
+  (on down2 (= snake2 (if (== (.. (.. (prev snake2) head) color) "red") then (prev snake2) else (updateObj (prev snake2) "direction" (Position 0 1)))))
+
+  (on left3 (= snake3 (if (== (.. (.. (prev snake3) head) color) "red") then (prev snake3) else (updateObj (prev snake3) "direction" (Position -1 0)))))
+  (on right3 (= snake3 (if (== (.. (.. (prev snake3) head) color) "red") then (prev snake3) else (updateObj (prev snake3) "direction" (Position 1 0)))))
+  (on up3 (= snake3 (if (== (.. (.. (prev snake3) head) color) "red") then (prev snake3) else (updateObj (prev snake3) "direction" (Position 0 -1)))))
+  (on down3 (= snake3 (if (== (.. (.. (prev snake3) head) color) "red") then (prev snake3) else (updateObj (prev snake3) "direction" (Position 0 1)))))
+
+  (on left4 (= snake4 (if (== (.. (.. (prev snake4) head) color) "red") then (prev snake4) else (updateObj (prev snake4) "direction" (Position -1 0)))))
+  (on right4 (= snake4 (if (== (.. (.. (prev snake4) head) color) "red") then (prev snake4) else (updateObj (prev snake4) "direction" (Position 1 0)))))
+  (on up4 (= snake4 (if (== (.. (.. (prev snake4) head) color) "red") then (prev snake4) else (updateObj (prev snake4) "direction" (Position 0 -1)))))
+  (on down4 (= snake4 (if (== (.. (.. (prev snake4) head) color) "red") then (prev snake4) else (updateObj (prev snake4) "direction" (Position 0 1)))))
+
+  (on (== (.. (.. snake head) color) "red") (= snake (Snake (Cell (.. (.. (prev snake) head) position) "red") (.. (prev snake) tail) (.. (prev snake) direction) (.. (prev snake) origin))))
+  (on (== (.. (.. snake2 head) color) "red") (= snake2 (Snake (Cell (.. (.. (prev snake2) head) position) "red") (.. (prev snake2) tail) (.. (prev snake2) direction) (.. (prev snake2) origin))))
+  (on (== (.. (.. snake3 head) color) "red") (= snake (Snake (Cell (.. (.. (prev snake3) head) position) "red") (.. (prev snake3) tail) (.. (prev snake3) direction) (.. (prev snake3) origin))))
+  (on (== (.. (.. snake4 head) color) "red") (= snake2 (Snake (Cell (.. (.. (prev snake4) head) position) "red") (.. (prev snake4) tail) (.. (prev snake4) direction) (.. (prev snake4) origin))))
+
+  (on (== (.. (.. (prev snake) head) color) "red") (= snake (prev snake)))
+  (on (== (.. (.. (prev snake2) head) color) "red") (= snake2 (prev snake2)))
+  (on (== (.. (.. (prev snake3) head) color) "red") (= snake3 (prev snake3)))
+  (on (== (.. (.. (prev snake4) head) color) "red") (= snake4 (prev snake4)))
+)`);
+      }
+
+      
+
       function snakeClick() {
         model_name = "snake";
         myCodeMirror.setValue(`(program
