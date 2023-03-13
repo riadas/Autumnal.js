@@ -5214,9 +5214,23 @@ function vectorAdd(args, state=null) {
   return Position([pos1.x + pos2.x, pos1.y + pos2.y]);
 }
 
-function vectorSubtract(args, state=null) {
+function vectorSub(args, state=null) {
   var [pos1, pos2] = args;
   return Position([pos1.x - pos2.x, pos1.y - pos2.y]);
+}
+
+function scalarMult(args, state=null) {
+  var [pos, scalar] = args;
+  return Position([scalar * pos.x, scalar * pos.y]);
+}
+
+function scalarDiv(args, state=null) {
+  var [pos, scalar] = args;
+  return Position ([pos.x / scalar, pos.y / scalar]);
+}
+
+function floor(args, state=null){
+  return Math.floor(args[1]);
 }
 
 function displacement(args, state=null) {
@@ -5961,7 +5975,10 @@ var lib_to_func = {"ObjectType" : ObjectType,
                    "unitVectorRand": unitVectorRand,
                    "displacement" : displacement,
                    "vectorAdd" : vectorAdd,
-                   "vectorSubtract" : vectorSubtract,
+                   "vectorSub" : vectorSubtract,
+                   "scalarMult" : scalarMult, 
+                   "scalarDiv" : scalarDiv,
+                   "floor" : floor,
                    "adjacent" : adjacent,
                    "adjacentObjs" : adjacentObjs,
                    "adjacentObjsDiag" : adjacentObjsDiag,
