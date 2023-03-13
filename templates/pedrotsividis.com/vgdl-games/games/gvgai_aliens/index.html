@@ -5209,6 +5209,16 @@ function unitVectorRand(args, state=null) {
   }
 }
 
+function vectorAdd(args, state=null) {
+  var [pos1, pos2] = args;
+  return Position([pos1.x + pos2.x, pos1.y + pos2.y]);
+}
+
+function vectorSubtract(args, state=null) {
+  var [pos1, pos2] = args;
+  return Position([pos1.x - pos2.x, pos1.y - pos2.y]);
+}
+
 function displacement(args, state=null) {
   if (args[0].color != undefined) { // cell version
     var [cell1, cell2] = args;
@@ -5950,6 +5960,8 @@ var lib_to_func = {"ObjectType" : ObjectType,
                    "unitVector" : unitVector,
                    "unitVectorRand": unitVectorRand,
                    "displacement" : displacement,
+                   "vectorAdd" : vectorAdd,
+                   "vectorSubtract" : vectorSubtract,
                    "adjacent" : adjacent,
                    "adjacentObjs" : adjacentObjs,
                    "adjacentObjsDiag" : adjacentObjsDiag,
