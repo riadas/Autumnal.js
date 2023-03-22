@@ -1146,7 +1146,8 @@ if (haveEvents) {
             history_mode = false;  
             saved = false;
 
-            x = test_ants_actual();
+
+            x = parseau("(program (= GRID_SIZE 5))") // test_ants_actual();
             console.log(x);
             // console.log("compileClick")
             // // console.log("content: "+content);
@@ -4404,9 +4405,27 @@ function river2Click() {
 
       // Construct Autumn Expression (AExpr) from program string
       function parseau(program_str) {
-        var sexpr = SParse(program_str);
-        var aexpr = s_to_a(sexpr); 
+        var cleaned_sexpr = remove_comments(SParse(program_str));
+        var aexpr = s_to_a(cleaned_sexpr); 
         return aexpr;
+      }
+
+      function remove_comments(sexpr) {
+        let new_sexpr = [];
+        for (arg of sexpr) {
+          if (Array.isArray(arg)) {
+            if (arg.length != 0) {
+              if (arg[0] != "%%") {
+                new_sexpr.push(remove_comments(arg));
+              }
+            } else {
+              new_sexpr.push(arg);
+            }
+          } else {
+            new_sexpr.push(arg);
+          }
+        }
+        return new_sexpr;
       }
 
       // Convert S-Expression (SExpr) to Autumn Expression (AExpr)
@@ -4797,8 +4816,8 @@ function occurred(args, state=null) {
 function uniformChoice(args, state=null) {
   // console.log("UNIFORMCHOICE");
   var freePositions = args[0];
-  console.log("freePositions");
-  console.log(freePositions);
+  // console.log("freePositions");
+  // console.log(freePositions);
   if (args.length == 1) {
     return freePositions[Math.floor(Math.random()*freePositions.length)];
   } else {
