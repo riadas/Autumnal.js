@@ -1085,8 +1085,8 @@ if (haveEvents) {
             xml_json[1].forEach(function (particle) {
               // console.log("particle");
               // console.log(particle);
-              if ((particle[1] < grid_size[1] && particle[1] >= 0) && (particle[0] < grid_size[0] && particle[0] >= 0)) {
-                cell = document.getElementById((particle[1]*grid_size[0] + particle[0]).toString())
+              if ((Math.floor(particle[1]) < grid_size[1] && Math.floor(particle[1]) >= 0) && (Math.floor(particle[0]) < grid_size[0] && Math.floor(particle[0]) >= 0)) {
+                cell = document.getElementById((Math.floor(particle[1])*grid_size[0] + Math.floor(particle[0])).toString())
                 // console.log("cell");
                 // console.log(cell);
                 cell.style.background = cell.style.background != "linear-gradient(45deg, "+colorToRGBA(xml_json[0], 0.6)+", "+colorToRGBA(xml_json[0], 0.6)+")" ? 
@@ -5226,6 +5226,11 @@ function scalarMult(args, state=null) {
 
 function scalarDiv(args, state=null) {
   var [pos, scalar] = args;
+  // console.log("pos");
+  // console.log(pos);
+  // console.log("scalar");
+  // console.log(scalar);
+  // console.log()
   return Position ([pos.x / scalar, pos.y / scalar]);
 }
 
