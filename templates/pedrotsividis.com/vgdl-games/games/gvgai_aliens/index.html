@@ -4938,7 +4938,7 @@ function pushConfiguration(args, state=null) {
 }
 
 function moveIntersects(args, state=null) {
-  var [arrow, obj1, obj2];
+  var [arrow, obj1, obj2] = args;
   return (arrow != Position([0, 0])) && intersects([move([obj1, arrow], state), obj2], state);
 }
 
