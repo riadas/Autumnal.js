@@ -5394,8 +5394,9 @@ function moveNoCollisionColor(args, state=null) {
   if (args.length == 3) {
     var [object, position, color] = args;
     var new_object = move([object, position]);
-    var matching_color_objects = state.scene.objects.filter(obj => intersects([new_object, obj], state) && (render([obj], state).map(cell => cell.color).includes(color)))  
-    if (matching_color_objects == []) {
+    var matching_color_objects = state.scene.objects.filter(obj => intersects([new_object, obj], state) && render([obj], state).map(cell => JSON.stringify(cell.color).slice(8, -2)).includes(JSON.stringify(color).slice(8, -2)))  
+    
+    if (matching_color_objects.length == 0) {
       return new_object;
     } else {
       return object;
