@@ -4923,13 +4923,24 @@ function objClicked(args, state=null) {
   }
 }
 
-// function pushConfiguration(args, state=null) {
+function pushConfiguration(args, state=null) {
+  if (args.length == 3) {
+    var [arrow, obj1, obj2] = args;
+    if (!Array.isArray(obj2)) {
+      return pushConfiguration([arrow, obj1, [obj2]], state);
+    } else {
+      return moveIntersects([arrow, obj1, obj2], state) && isFree([move([move([obj1, arrow], state), arrow], state).origin], state);
+    }
+  } else { // args.length == 4
+    var [arrow, obj1, obj2, obj3] = args;
+    return moveIntersects([arrow, obj1, obj2], state) && intersects([move([move([obj1, arrow], state), arrow], state), obj3], state);
+  }
+}
 
-// }
-
-// function moveIntersects(args, state=null) {
-
-// }
+function moveIntersects(args, state=null) {
+  var [arrow, obj1, obj2];
+  return (arrow != Position([0, 0])) && intersects([move([obj1, arrow], state), obj2], state);
+}
 
 function intersects(args, state=null) {
   // console.log("INTERSECTS");
