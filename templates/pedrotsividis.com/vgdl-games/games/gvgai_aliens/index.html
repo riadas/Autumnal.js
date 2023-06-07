@@ -5267,6 +5267,10 @@ function scalarDiv(args, state=null) {
 function floor(args, state=null){
   return Math.floor(args[1]);
 }
+		
+function round(args, state=null){
+  return Math.round(args[1]);
+}
 
 function displacement(args, state=null) {
   if (args[0].color != undefined) { // cell version
@@ -6023,6 +6027,7 @@ var lib_to_func = {"ObjectType" : ObjectType,
                    "scalarMult" : scalarMult, 
                    "scalarDiv" : scalarDiv,
                    "floor" : floor,
+		   "round" : round,
                    "adjacent" : adjacent,
                    "adjacentObjs" : adjacentObjs,
                    "adjacentObjsDiag" : adjacentObjsDiag,
