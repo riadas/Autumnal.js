@@ -47,7 +47,7 @@ def save(user_id):
 
   game_name = data["game_name"]
 
-  directory = "october_traces/"+game_name # new_traces
+  directory = "new_age_traces/"+game_name # new_traces
   if not os.path.isdir(directory):
     os.mkdir(directory)  
   with open(directory + "/TIME_" + str(datetime.now()) + ".json", 'w') as outfile:

@@ -5265,11 +5265,29 @@ function scalarDiv(args, state=null) {
 }
 
 function floor(args, state=null){
-  return Math.floor(args[1]);
+  // console.log("FLOOR");
+  // console.log(args[0]);
+  // console.log(Math.floor(args[0]));
+  return Math.floor(args[0]);
 }
 		
 function round(args, state=null){
-  return Math.round(args[1]);
+  // console.log("ROUND");
+  // console.log(args[0]);
+  // console.log(Math.round(args[0]));
+  return Math.round(args[0]);
+}
+
+function max(args, state=null){
+  // console.log("MAX");
+  // console.log(Math.max(...args));
+  return Math.max(...args);
+}
+
+function min(args, state=null){
+  // console.log("MIN");
+  // console.log(Math.min(...args))
+  return Math.min(...args);
 }
 
 function displacement(args, state=null) {
@@ -5957,7 +5975,7 @@ function isobject(aex) {
 var prim_to_func = {"+" : function(x, y) {return x + y;},
                    "-" : function(x, y) {return x - y;},
                    "*" : function(x, y) {return x * y;},
-                   "/" : function(x, y) {return Math.floor(x / y);},
+                   "/" : function(x, y) {return x / y;},
                    "&" : function(x, y) {return x && y;},
                    "!" : function(x) {return !x;},
                    "|" : function(x, y) {return x || y;},
@@ -5968,7 +5986,7 @@ var prim_to_func = {"+" : function(x, y) {return x + y;},
                    "==" : function(x, y) {return x == y;},
                    "%" : function(x, y) {return x % y;},
                    "!=" : function(x, y) {return x != y;},
-                   "sqrt" : function(x) {return Math.floor(Math.sqrt(x));},
+                   "sqrt" : function(x) {return Math.sqrt(x);},
                    "abs" : function(x) {return Math.abs(x);},
                   }
 
@@ -6027,7 +6045,9 @@ var lib_to_func = {"ObjectType" : ObjectType,
                    "scalarMult" : scalarMult, 
                    "scalarDiv" : scalarDiv,
                    "floor" : floor,
-		   "round" : round,
+		               "round" : round,
+                   "max" : max,
+                   "min" : min,
                    "adjacent" : adjacent,
                    "adjacentObjs" : adjacentObjs,
                    "adjacentObjsDiag" : adjacentObjsDiag,
