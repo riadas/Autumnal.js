@@ -5787,6 +5787,10 @@ function unfold(args, state=null) {
   return V;
 }
 
+function range(args, state=null) {
+  return [...Array(args[0]).keys()]
+}
+
 function average(args, state=null) {
   var array = args[0];
   if (array.length == 0) {
@@ -6073,6 +6077,7 @@ var lib_to_func = {"ObjectType" : ObjectType,
                    "nextSolid" : nextSolid,
                    "allPositions" : allPositions,
                    "unfold" : unfold,
+                   "range" : range,
                    "average" : average,
                   }
 
